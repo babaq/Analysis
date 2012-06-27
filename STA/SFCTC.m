@@ -1,0 +1,95 @@
+function SFCTC(sfcdata,DataSet,freqrange,ch_s,sorts,ch_w)
+% SFCTC.m
+% 2011-03-27 by Zhang Li
+% Draw Spike Field Coherence Tuning Curve
+
+if nargin < 3
+    prompt = {'Start Frequency :','Stop Frequency :'};
+    dlg_title = 'Spike Train Correlation Power Spectrum Tuning Curve';
+    num_lines = 1;
+    def = {'0','200'};
+    input = inputdlg(prompt,dlg_title,num_lines,def);
+    freqrange(1) = str2double(input{1});
+    freqrange(2) = str2double(input{2});
+end
+if nargin > 3
+    sfcdata = sfc(DataSet,ch_s,sorts,ch_w);
+end
+ch_s = sfcdata{end}.params.ch_s;
+sorts = sfcdata{end}.params.sorts;
+ch_w = sfcdata{end}.params.ch_w;
+sfctype = sfcdata{end}.params.type;
+
+
+if DataSet.Mark.stimuli==1
+    disp('No Tuning !');
+    warndlg('Only One Stimulus !','No Tuning');
+    return;
+end
+cu = 'Coherence';
+
+textsize = 14;
+fig_name = [DataSet.Mark.extype,'__',DataSet.Snip.spevent,...
+    '__( C-',num2str(ch_s),'_U-',sorts,' ^ C-',num2str(ch_w),' )__SFCTC_',sfctype];
+scnsize = get(0,'ScreenSize');
+output{1} = DataSet.OutputDir;
+output{2} = fig_name;
+output{3} = DataSet.Dinf.tank;
+output{4} = DataSet.Dinf.block;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+hWin = figure('Units','pixels',...
+    'Position',[120 35 scnsize(3)*0.88 scnsize(4)*0.86], ...
+    'Tag','Win', ...
+    'Name',fig_name,...
+    'CloseRequestFcn',@Win_CloseRequestFcn,...
+    'NumberTitle','off',...
+    'UserData',output);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+switch sfctype
+    case 'sfc'
+        C = getps(sfcdata,freqrange);
+        X = C{end}.frequencies;
+        Y = fmean(C{1}.data);
+    case 'stasfc'
+        X = sfcdata{end}.frequencies;
+        freqindex = (X>=freqrange(1)) & (X<=freqrange(2));
+        X = X(freqindex);
+        C = sfcdata{1}.data;
+        for s=1:length(C)
+            temp = C{s}(:,freqindex);
+            temp = double(fm(temp));
+            Y(s,:) = abs(mean(temp,1));
+        end
+end
+
+bc = [1 0.1 0.1];
+ec = [0.1 0.1 1];
+sti = DataSet.Mark.condtable{1};
+cm = makeColorMap(bc,0.9*[1 1 1],ec,DataSet.Mark.stimuli-1);
+step = 2; j = 1;
+for s=1:step:DataSet.Mark.stimuli
+    y = Y(s,:);
+    if s==1 % background
+        cc = [0.3 0.3 0.3];
+    else
+        cc = cm(s-1,:);
+    end
+    plot(X,y,'color',cc,'linewidth',2);
+    hold on;
+    ls{j} = ['\color[rgb]','{',num2str(cc),'}',num2str(sti(s)),' \circ'];
+    j = j + 1;
+end
+
+switch DataSet.Mark.extype
+    case 'RF_Size'
+        legend(ls,'Location','NorthEastOutside');
+        legend show;
+        legend boxoff;
+    otherwise
+end
+
+set(gca,'LineWidth',2,'FontSize',textsize,'box','off',...
+    'XTick',freqrange(1):(freqrange(2)-freqrange(1))/10:freqrange(2),'XLim',[freqrange(1) freqrange(2)]);
+title(fig_name,'Interpreter','none','FontWeight','bold','FontSize',textsize);
+ylabel(cu,'FontSize',textsize);
+xlabel('Frequency (Hz)','FontSize',textsize);

@@ -1,0 +1,4 @@
+all data about a experiment is exported from a Experiment.mat file.
+the result data is indexed in SesseionIndex file.
+
+In each Batch, using the SessionIndex file to perform various anylsis.

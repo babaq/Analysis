@@ -1,0 +1,29 @@
+function [pd dsi osi] = DT(mr,sti)
+% DT.m
+% 2011-10-23 by Zhang Li
+% Direction Tuning Parameters
+
+
+pd = sti(mr==max(mr));
+
+
+
+dsi = 1-()
+% SI is defined on stimuli other than background 1
+bmr = mr(1);
+mr = mr(2:end);
+sti = sti(2:end);
+r_max = max(mr);
+if ~isfinite(r_max)
+    si = NaN;
+    s_max = NaN;
+    s_min = NaN;
+else
+    maxind = find(mr==r_max);
+    s_max = mean(sti(maxind));
+    r_sur = mr(maxind(end):end);
+    sti_sur = sti(maxind(end):end);
+    r_sur_min = min(r_sur);
+    s_min = mean(sti_sur(r_sur==r_sur_min));
+    si = (r_max-r_sur_min)/(r_max-bmr);
+end

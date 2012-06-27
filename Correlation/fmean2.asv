@@ -1,0 +1,25 @@
+function [m se t] = fmean2(x)
+% fmean2.m
+% 2010-7-13 by Zhang Li
+% Finite Matrix First Dim Mean and Standard Error without NaN and +/-Inf (2D X)
+
+msize = size(x);
+m = zeros(1,msize(2));
+se = m;
+t = m;
+for i=1:msize(2)
+    sx = squeeze(x(:,i));
+    ivsxi = ~isfinite(sx);
+    sx( ivsxi==1)=[];
+    
+    if ~isempty(sx)
+        ivsxit = ivsxi(:,1);
+        ivsxit(ivsxit==1)=[];
+        vt = length(ivsxit);
+        sx = reshape(sx,[vt msize(3)]);
+        m(i) = mean(sx);
+        t(i) = vt;
+    else
+        m(i,:) = NaN;
+    end
+end
