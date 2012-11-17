@@ -110,8 +110,18 @@ else
     x90=x==90;
     cs = abs(ys(x0)-ys(x90))/ys(x90);
     cf = abs(yf(x0)-yf(x90))/yf(x90);
+    cs = fmean2((ci.oosurs(:,2)-ci.oosurs(:,4))./ci.oosurs(:,4));
+    cf = fmean2((ci.oosurf(:,2)-ci.oosurf(:,4))./ci.oosurf(:,4));
+    cs94 = fmean2((ci.oosurs(:,3)-ci.oosurs(:,4))./ci.oosurs(:,4));
+    cf94 = fmean2((ci.oosurf(:,3)-ci.oosurf(:,4))./ci.oosurf(:,4));
+    cs40 = fmean2((ci.oosurs(:,2)-ci.oosurs(:,3))./ci.oosurs(:,4));
+    cf40 = fmean2((ci.oosurf(:,2)-ci.oosurf(:,3))./ci.oosurf(:,4));
     ps = signrank(ci.oosurs(:,2),ci.oosurs(:,4),'method','exact','alpha',0.05);
     pf = signrank(ci.oosurf(:,2),ci.oosurf(:,4),'method','exact','alpha',0.05);
+    ps94 = signrank(ci.oosurs(:,3),ci.oosurs(:,4),'method','exact','alpha',0.05);
+    pf94 = signrank(ci.oosurf(:,3),ci.oosurf(:,4),'method','exact','alpha',0.05);
+    ps40 = signrank(ci.oosurs(:,2),ci.oosurs(:,3),'method','exact','alpha',0.05);
+    pf40 = signrank(ci.oosurf(:,2),ci.oosurf(:,3),'method','exact','alpha',0.05);
 %     [h ps] = ttest(ci.oosurs(:,2),ci.oosurs(:,4),0.05,'both');
 %     [h pf] = ttest(ci.oosurf(:,2),ci.oosurf(:,4),0.05,'both');
     ars='';
@@ -123,6 +133,9 @@ linewidth = 1;
 axiswidth = 0.5;
 errorbarwidth = 0.5;
 loc = 'northeastoutside';
+mcolor = [0.15 0.25 0.45];
+
+%% surround surppression curve
 fig_name = ['SBCS_',num2str(extent),'_',num2str(delay),...
     '_',num2str(round(pret*10)),'_',num2str(round(post*10)),...
     '_',unit,'_',stitype,'_',num2str(freqrange),'_CSTC2_',scstype,isf,issu];
@@ -182,7 +195,8 @@ legend('boxoff');
 
 annotation('textbox',[0.24 0.8 0.3 0.1],'FontSize',textsize,'LineStyle','none',...
     'string',{['n=',num2str(sn)],['c_s=',num2str(cs)],['p_s=',num2str(ps)],...
-    ['c_f=',num2str(cf)],['p_f=',num2str(pf)]});
+    ['c_f=',num2str(cf)],['p_f=',num2str(pf)],['c_s94=',num2str(cs94)],['p_s94=',num2str(ps94)],['c_f94=',num2str(cf94)],['p_f94=',num2str(pf94)],...
+    ['c_s40=',num2str(cs40)],['p_s40=',num2str(ps40)],['c_f40=',num2str(cf40)],['p_f40=',num2str(pf40)]});
 
 annotation('textbox',[0.64 0.6 0.3 0.1],'FontSize',textsize,'LineStyle','none',...
     'string',{'Center alone'});
@@ -194,4 +208,85 @@ annotation('textbox',[0.64 0.6 0.3 0.1],'FontSize',textsize,'LineStyle','none',.
 
 ylabel('Normalized Response','FontSize',textsize);
 xlabel('Orientation Relative To Center (degrees)','FontSize',textsize);
+title(fig_name,'Interpreter','none','FontWeight','bold','FontSize',textsize);
+
+%% CV 
+fig_name = ['SBCS_',num2str(extent),'_',num2str(delay),...
+    '_',num2str(round(pret*10)),'_',num2str(round(post*10)),...
+    '_',unit,'_',stitype,'_',num2str(freqrange),'_CSTC22_',scstype,isf,issu];
+output{2} = fig_name;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+hWin = figure('Units','pixels',...
+    'Position',[120 35 scnsize(3)*0.88 scnsize(4)*0.86], ...
+    'Tag','Win', ...
+    'Name',fig_name,...
+    'CloseRequestFcn',@Win_CloseRequestFcn,...
+    'NumberTitle','off',...
+    'UserData',output);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lim = [0 1];
+lim = [0 60];
+step = 0.5;
+step = 10;
+
+
+ys = 1-ci.oosurs;
+    ys = circshift(ys,[0 1]);
+    ys(:,[1 2]) = ys(:,[2 1]);
+    nys = ys(:,1);
+    ys(:,1) = ys(:,end);
+    [cvs angs] = CV(ys(:,2:end),deg2rad(x(:,2:end)));
+    
+    yf = 1-ci.oosurf;
+    yf = circshift(yf,[0 1]);
+    yf(:,[1 2]) = yf(:,[2 1]);
+    nyf = yf(:,1);
+    yf(:,1) = yf(:,end);
+    [cvf angf] = CV(yf(:,2:end),deg2rad(x(:,2:end)));
+    
+    
+    fx = x(1):5:x(end);
+    for j = 1:sn
+        fy = interp1(x,ys(j,:),fx,'linear');
+%         cvs(j) = CV(fy,deg2rad(fx));
+        [curvefit,goodness,fitinfo]=OriFit(fx,fy,'dog');
+            fcs = coeffvalues(curvefit);
+            tt = fcs(2);
+            tt(tt<0) = tt(tt<0)+180;
+            tt(tt>180) = tt(tt>180)-180;
+            forits(j,:) = [tt fcs(3) goodness.adjrsquare];
+            cvs(j) = fcs(3);
+            
+            
+        fy = interp1(x,yf(j,:),fx,'linear');
+%         cvf(j) = CV(fy,deg2rad(fx));
+            [curvefit,goodness,fitinfo]=OriFit(fx,fy,'dog');
+            fcs = coeffvalues(curvefit);
+            tt = fcs(2);
+            tt(tt<0) = tt(tt<0)+180;
+            tt(tt>180) = tt(tt>180)-180;
+            foritf(j,:) = [tt fcs(3) goodness.adjrsquare];
+            cvf(j) = fcs(3);
+    end
+    
+%     cvs = cvs(cvs>5);
+%     cvf = cvf(cvf>5);
+    
+    plot([lim(1) lim(2)], [lim(1) lim(2)],'-k','linewidth',linewidth);
+    hold on;
+    plot(cvs,cvf,'o','Linewidth',linewidth,'MarkerSize',7,'MarkerEdgeColor',mcolor,'MarkerFaceColor',mcolor);
+% plot(forits(:,2),foritf(:,2),'o','Linewidth',linewidth,'MarkerSize',7,'MarkerEdgeColor',mcolor,'MarkerFaceColor',mcolor);
+
+    set(gca,'LineWidth',axiswidth,'FontSize',textsize,'YLim',[lim(1) lim(2)],'XLim',[lim(1) lim(2)],...
+    'XTick',(lim(1):step:lim(2)),'YTick',(lim(1):step:lim(2)),'DataAspectRatio',[1 1 1]);
+
+p = signrank(cvs,cvf,'method','exact','alpha',0.05);
+% p = signrank(forits(:,2),foritf(:,2),'method','exact','alpha',0.05);
+%     [h p] = ttest(forits(:,2),foritf(:,2),0.05,'both');
+
+annotation('textbox',[0.24 0.8 0.3 0.1],'FontSize',textsize,'LineStyle','none',...
+    'string',{['n=',num2str(sn)],['p=',num2str(p)]});
+
+ylabel('LFP TuningWidth','FontSize',textsize);
+xlabel('Spike TuningWidth','FontSize',textsize);
 title(fig_name,'Interpreter','none','FontWeight','bold','FontSize',textsize);

@@ -211,18 +211,19 @@ for i = 1:sn
             end
             oof = c1(ooif);
             %%%%%%%%%% Spike %%%%%%%%%%%
-            %             opmorisurs = cn(stc(ooi,:),'n');
+            %          opmorisurs = cn(stc(ooi,:),'n');
             
             temp = stc;
             for o = 1:length(sti{1})
                 temp(o,:) = cn(stc(o,:),'n');
             end
-            opmorisurs = mean(temp);
+            opmorisurs = cn(mean(temp(1:end,:)),'n');
+%             opmorisurs = mean(temp(1:end,:));
             
             temp = stc;
             for o = 1:length(sti{2})
                 temp(:,o) = cn(stc(:,o),'n');
-                surcvs(:,o) = CV(stc(2:end,o),deg2rad(c1(2:end)));
+                surcvs(:,o) = CV(stc(2:end,o)',deg2rad(c1(2:end)'));
             end
             suroris = ctcshift(temp,ooi);
             suroricns = cn(suroris,'a');
@@ -240,18 +241,19 @@ for i = 1:sn
             stc = ctcshift(stc,ooi);
             
             %%%%%%%%%%%%% Wave %%%%%%%%%%%%%
-            %             opmorisurf = cn(ftc(ooi,:),'n');
+             %           opmorisurf = cn(ftc(ooi,:),'n');
             
             temp = ftc;
             for o = 1:length(sti{1})
                 temp(o,:) = cn(ftc(o,:),'n');
             end
-            opmorisurf = mean(temp);
+            opmorisurf = cn(mean(temp(1:end,:)),'n');
+%             opmorisurf = mean(temp(1:end,:));
             
             temp = ftc;
             for o = 1:length(sti{2})
                 temp(:,o) = cn(ftc(:,o),'n');
-                surcvf(:,o) = CV(ftc(2:end,o),deg2rad(c1(2:end)));
+                surcvf(:,o) = CV(ftc(2:end,o)',deg2rad(c1(2:end)'));
             end
             surorif = ctcshift(temp,ooif);
             suroricnf = cn(surorif,'a');
@@ -271,13 +273,13 @@ for i = 1:sn
             if isfield(cur,'sctc')
                 sctc = cur.sctc.mtc;
                 
-                %                 opmorisursc = cn(sctc(ooi,:),'n');
+                %                opmorisursc = cn(sctc(ooi,:),'n');
                 
                 temp = sctc;
                 for o = 1:length(sti{1})
                     temp(o,:) = cn(sctc(o,:),'n');
                 end
-                opmorisursc = mean(temp);
+                opmorisursc = cn(mean(temp(2:end,:)),'n');
                 
                 sctc = cn(cur.sctc.mtc,'n');
                 sctc = ctcshift(sctc,ooi);

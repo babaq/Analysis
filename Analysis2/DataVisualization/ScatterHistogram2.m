@@ -48,7 +48,7 @@ if nargin < 4
             lim = 1;
             bin = (0:0.1:1);
             xu = [xt,' Fit Adj-R^2'];
-        case {'maxs','mins','maxf','minf','maxsc','minsc','res','ris','ref','rif','resc','risc'}
+        case {'maxs','mins','hws','maxf','minf','hwf','maxsc','minsc','res','ris','ref','rif','resc','risc'}
             x = si.(xtype);
             step = stiend/2;
             limlow = 0;
@@ -65,7 +65,7 @@ if nargin < 4
         case {'fgs','fgf','fgsc'}
             y = si.(ytype);
             yu = [yt,' Fit Adj-R^2'];
-        case {'maxs','mins','maxf','minf','maxsc','minsc','res','ris','ref','rif','resc','risc'}
+        case {'maxs','mins','hws','maxf','minf','hwf','maxsc','minsc','res','ris','ref','rif','resc','risc'}
             y = si.(ytype);
             yu = 'Stimulus Diameter (degrees)';
     end

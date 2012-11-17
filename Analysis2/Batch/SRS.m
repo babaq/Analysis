@@ -3,11 +3,11 @@ function ri = SRS(SBRS,type,varargin)
 % 2012-04-09 by Zhang Li
 % Statistics of Batched RF_Surround
 
-
+ri.info = SBRS{end,1};
 sn = size(SBRS,1)-1;
 vsn=1;
 %%%%%%%%%%%%%
-interptime = 3;
+interptime = 4;
 sms = [];
 fmf = [];
 oosursc = [];
@@ -17,6 +17,10 @@ surosc = [];
 surocns = [];
 surocnf = [];
 surocnsc = [];
+inner = 0;
+outer = 5;
+inner = inner*2^interptime;
+                        outer = outer*2^interptime;
 %%%%%%%%%%%%%
 for i = 1:sn
     cur = SBRS{i,1};
@@ -200,8 +204,8 @@ for i = 1:sn
                 %                 temp = interp2(squeeze(fm(t,:,:)),interptime,'cubic');
                 %                 temp = (temp-temp(cind,cind))/temp(cind,cind);
                 %                 tfm(t,:,:) = shiftdim(temp,-1);
-                sm(t,:,:) = (sm(t,:,:)-sm(t,cind,cind))/sm(t,cind,cind);
-                fm(t,:,:) = (fm(t,:,:)-fm(t,cind,cind))/fm(t,cind,cind);
+                %                 sm(t,:,:) = (sm(t,:,:)-sm(t,cind,cind))/sm(t,cind,cind);
+                %                 fm(t,:,:) = (fm(t,:,:)-fm(t,cind,cind))/fm(t,cind,cind);
             end
             %             sm = squeeze(fmean(tsm));
             %             fm = squeeze(fmean(tfm));
@@ -211,47 +215,211 @@ for i = 1:sn
             %%%%%%%%%% Spike %%%%%%%%%%%
             %                         sm = cur.msm;
             %                         fm = cfr.mfm;
-            %                         sm = (sm-sm(cind,cind))/sm(cind,cind);
-            %                         fm = (fm-fm(cind,cind))/fm(cind,cind);
-            sm = interp2(sm,interptime,'cubic');
-            fm = interp2(fm,interptime,'cubic');
+            sm = (sm-sm(cind,cind))/sm(cind,cind);
+            fm = (fm-fm(cind,cind))/fm(cind,cind);
+                        sm = interp2(sm,interptime,'cubic');
+                        fm = interp2(fm,interptime,'cubic');
+                        
+            nsite = size(sm,1)^2;
             cind = (size(sm,1)-1)/2+1;
             
             ind = find(sm<0);
+            nvsites = numel(ind);
             [r c] = ind2sub(size(sm),ind);
             rr=-(r-cind);
             cc = c-cind;
             d = sqrt(rr.*rr+cc.*cc);
-            dsin = asin(rr./d);
-            dcos = acos(cc./d);
-            ed = dcos;
-            ed(dsin<0) = 2*pi-dcos(dsin<0);
             
-            avv = abs(sm(ind)).*exp(1i*ed);
+%             d = d(d>inner & d<outer);
+%             rr = rr(d>inner & d<outer);
+%             cc = cc(d>inner & d<outer);
+%             r = -rr+cind;
+%             c = cc+cind;
+%             ind = sub2ind(size(sm),r,c);
+            
+            cosf = cc./d;
+            sinf = rr./d;
+            avv = abs(sm(ind)).*(cosf+1i*sinf);
+                        dsin = asin(rr./d);
+                        dcos = acos(cc./d);
+                        ed = dcos;
+                        ed(dsin<0) = 2*pi-dcos(dsin<0);
+            
+                        avv2 = abs(sm(ind)).*exp(1i*2*ed);
+                        avv4 = abs(sm(ind)).*exp(1i*4*ed);
             avs = sum(avv);
             adirs = rad2deg(angle(avs))-dir;
-            asis = abs(avs)/abs(sum(sm(ind)));
+            asis = abs(avs)/sum(abs(sm(ind)));
+            avs2 = sum(avv2);
+            adirs2 = rad2deg(angle(avs2))/2-dir;
+            asis2 = abs(avs2)/sum(abs(sm(ind)));
+            avs4 = sum(avv4);
+            adirs4 = rad2deg(angle(avs4))/4-dir;
+            asis4 = abs(avs4)/sum(abs(sm(ind)));
             %%%%%%%%%%%%% Wave %%%%%%%%%%%%%
             ind = find(fm<0);
+            nvsitef = numel(ind);
             [r c] = ind2sub(size(fm),ind);
             rr=-(r-cind);
             cc = c-cind;
             d = sqrt(rr.*rr+cc.*cc);
-            dsin = asin(rr./d);
-            dcos = acos(cc./d);
-            ed = dcos;
-            ed(dsin<0) = 2*pi-dcos(dsin<0);
             
-            avv = abs(fm(ind)).*exp(1i*ed);
+%             d = d(d>inner & d<outer);
+%             rr = rr(d>inner & d<outer);
+%             cc = cc(d>inner & d<outer);
+%             r = -rr+cind;
+%             c = cc+cind;
+%             ind = sub2ind(size(sm),r,c);
+            
+            cosf = cc./d;
+            sinf = rr./d;
+            avv = abs(fm(ind)).*(cosf+1i*sinf);
+                        dsin = asin(rr./d);
+                        dcos = acos(cc./d);
+                        ed = dcos;
+                        ed(dsin<0) = 2*pi-dcos(dsin<0);
+            
+                        avv2 = abs(fm(ind)).*exp(1i*2*ed);
+                        avv4 = abs(fm(ind)).*exp(1i*4*ed);
             avf = sum(avv);
             adirf = rad2deg(angle(avf))-dir;
-            asif = abs(avf)/abs(sum(fm(ind)));
+            asif = abs(avf)/sum(abs(fm(ind)));
+            avf2 = sum(avv2);
+            adirf2 = rad2deg(angle(avf2))/2-dir;
+            asif2 = abs(avf2)/sum(abs(sm(ind)));
+            avf4 = sum(avv4);
+            adirf4 = rad2deg(angle(avf4))/4-dir;
+            asif4 = abs(avf4)/sum(abs(sm(ind)));
             %%%%%%%%%%%%%%% Spike Power %%%%%%%%%%%%%%%
             sind = cur.sessionindex;
             chan = cur.ch;
             sort = cur.sortid;
             rsite = cur.site;
             isv = 1;
+            if 0%nvsites > nsite/4 && nvsitef > nsite/4
+                isv = 1;
+                %%%%%%%%% draw data in files
+                for fg=1:2
+                    if fg==1
+                        map = sm;
+                        yu = 'Firing rate';
+                        signal = 'MFR';
+                        dec = 10;
+                    else
+                        map = fm;
+                        yu = 'Power';
+                        signal = 'LMP';
+                        dec  =10;
+                    end
+                    centerR = cur.ckey{end-3,2}/2;
+                    cx=-centerR:0.02*centerR:centerR;
+                    cy1 = sqrt(centerR^2-cx.^2);
+                    cy2 = -cy1;
+                    
+                    textsize = 22;
+                    linewidth = 1;
+                    axiswidth = 0.5;
+                    errorbarwidth = 0.5;
+                    fig_name = [cur.subject,'__',cur.session,'-',num2str(cur.blockid),'_',signal];
+                    scnsize = get(0,'ScreenSize');
+                    output = fullfile(ri.info.batchpath,ri.info.unit,ri.info.stitype,'RS');
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    hWin = figure('Units','pixels',...
+                        'Position',[250 30 scnsize(4) scnsize(4)*0.86], ...
+                        'Tag','Win', ...
+                        'Name',fig_name,...
+                        'NumberTitle','off');
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    color_n = 256;
+                    cm = colormap_rwb(color_n);
+                    %cm = jet(color_n);
+                    cs=['rgbkycm','rgbkycm']; % color sequence
+                    axiscolor = [0 0 0];
+                    imf = fspecial('average',(3-1)^(interptime)+1); % image filter
+                    
+                    
+                    row = length(cur.sti{1});
+                    step = cur.ckey{end,2};
+                    
+                    center_index = (row-1)/2 +1;
+                    pos_h = (-(row-1)/2:(row-1)/2)*step;
+                    pos_w = pos_h;
+                    
+                    limx = [pos_w(1) pos_w(end)];
+                    limy = [pos_h(1) pos_h(end)];
+                    tickx = pos_w;
+                    ticky = pos_h;
+                    
+                    if 0
+                        
+                        %map = imfilter(map,imf,'replicate');
+                        y = flipud(map);
+                        
+                        pos_w = pos_w(1):step/(2^interptime):pos_w(end);
+                        pos_h = pos_h(1):step/(2^interptime):pos_h(end);
+                        contourf(pos_w,pos_h,y,'LineStyle','none');
+                        colorbar();
+                    else
+                        %map = imfilter(map,imf,'replicate');
+                        y = flipud(map);
+                        
+                        mmin = min(min(y));
+                        mmax = max(max(y));
+                        
+                        if mmin<-0.85 || mmax>0.85
+                            disp([i,mmin,mmax]);
+                        else
+                            mmin = -0.85;
+                            mmax = 0.85;
+                        end
+                        mrange = mmax-mmin;
+                        y = mat2gray(y,[mmin mmax]);
+                        [y, m] = gray2ind(y,color_n);
+                        
+                        image([pos_w(1) pos_w(end)],[pos_h(1) pos_h(end)],y);
+                        colormap(cm);
+                        
+                        tickn = (-1:0.25:1);
+                        tick = tickn*(color_n-1)+1;
+                        tickny = round((mmin + tickn * mrange)*dec)/dec;
+                        for t=1:length(tickn)
+                            ticklabel{t} = num2str(tickny(t));
+                        end
+                        colorbar('LineWidth',axiswidth,'FontSize',textsize,'YTick',tick,'YTickLabel',ticklabel);
+                        
+                        annotation(hWin,'textbox','LineStyle','none','Interpreter','tex','FontSize',textsize,...
+                            'String',{yu},'FitHeightToText','off','Position',[0.8645 0.895 0.25 0.07])
+                        
+                    end
+                    
+                    hold on;
+                    plot(cx,cy1,':k',cx,cy2,':k','LineWidth',linewidth);
+                    xx = cos(deg2rad(dir));
+                    yy = sin(deg2rad(dir));
+                    annotation(hWin,'arrow',[-0.3 0.3]*xx+0.47,[-0.3 0.3]*yy+0.518);
+                    annotation(hWin,'textbox','LineStyle','none','Interpreter','tex','FontSize',textsize,...
+                        'String',{[num2str(cur.ckey{5,2}),'\circ']},'FitHeightToText','off','Position',[0.43 0.5 0.25 0.07])
+                    hold off;
+                    
+                    
+                    
+                    
+                    xlabel('Position (degrees)','FontSize',textsize);
+                    ylabel('Position (degrees)','FontSize',textsize);
+                    set(gca,'LineWidth',axiswidth,'FontSize',textsize,'Color',axiscolor,'box','off','TickDir','out','YDir','normal',...
+                        'DataAspectRatio',[1 1 1],'XTick',tickx,'YTick',ticky,'XLim',limx,'YLim',limy);
+                    title(fig_name,'Interpreter','none','FontWeight','bold','FontSize',textsize);
+                    
+                    if ~exist(output,'dir')
+                        mkdir(output);
+                    end
+                    %saveas(hWin,fullfile(output,[fig_name,'.fig']));
+                    saveas(hWin,fullfile(output,[fig_name,'.png']));
+                    delete(hWin);
+                    
+                end
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            end
     end
     
     if isv
@@ -290,6 +458,14 @@ for i = 1:sn
                 adir(vsn,2) = adirf;
                 asi(vsn,1) = asis;
                 asi(vsn,2) = asif;
+                adir2(vsn,1) = adirs2;
+                adir2(vsn,2) = adirf2;
+                asi2(vsn,1) = asis2;
+                asi2(vsn,2) = asif2;
+                adir4(vsn,1) = adirs4;
+                adir4(vsn,2) = adirf4;
+                asi4(vsn,1) = asis4;
+                asi4(vsn,2) = asif4;
                 
                 sms{vsn,1} = sm;
                 fmf{vsn,1} = fm;
@@ -396,10 +572,18 @@ switch type
         ri.ch = ch;
         ri.sortid = sortid;
     otherwise
-        adir = mod(adir+min(min(adir)),360);
+        adir = mod(adir,360);
         ri.adir = adir;
         ri.asi = asi;
         ri.av = asi.*exp(1i*deg2rad(adir));
+        adir2 = mod(adir2,180);
+        ri.adir2 = adir2;
+        ri.asi2 = asi2;
+        ri.av2 = asi2.*exp(1i*deg2rad(adir2));
+        adir4 = mod(adir4,90);
+        ri.adir4 = adir4;
+        ri.asi4 = asi4;
+        ri.av4 = asi4.*exp(1i*deg2rad(adir4));
         
         ri.sms = sms;
         ri.fmf = fmf;
@@ -447,5 +631,5 @@ switch type
         ri.sti = sti;
 end
 
-ri.info = SBRS{end,1};
+
 ri.info.srstype = type;

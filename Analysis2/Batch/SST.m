@@ -39,9 +39,9 @@ for i = 1:sn
                 fre = ffitc(end-1);
                 fri = ffitc(end);
                 ffg = ffitg;
-                [ssi smax smin]=FSI(sfit,sti,stiend);
+                [ssi smax smin shw]=FSI(sfit,sti,stiend);
                 stc = cur.mtc(1:vstin);
-                [fsi fmax fmin]=FSI(ffit,sti,stiend);
+                [fsi fmax fmin fhw]=FSI(ffit,sti,stiend);
                 ftc = cfr.wtc.mtc(1:vstin);
                 isv =1;
             else
@@ -60,7 +60,7 @@ for i = 1:sn
                 scre = scfitc(end-1);
                 scri = scfitc(end);
                 scfg = scfitg;
-                [scsi scmax scmin]=FSI(scfit,sti,stiend);
+                [scsi scmax scmin schw]=FSI(scfit,sti,stiend);
                 sctc = cur.sctc.mtc(1:vstin);
                 isv =1;
             end
@@ -198,7 +198,7 @@ for i = 1:sn
                 tc(t,:) = cn(tc(t,:),'an');
             end
             stc = fmean2(tc);
-            [ssi smax smin] = SI(stc,sti);
+            [ssi smax smin shw] = SI(stc,sti);
             stc = stc(1:vstin);
             %%%%%%%%%%%%%%%
 %                         stc = cur.mtc(1:vstin);
@@ -213,7 +213,7 @@ for i = 1:sn
                 tc(t,:) = cn(tc(t,:),'an');
             end
             ftc = fmean2(tc);
-            [fsi fmax fmin] = SI(ftc,sti);
+            [fsi fmax fmin fhw] = SI(ftc,sti);
             ftc = ftc(1:vstin);
             %%%%%%%%%%%%%%
 %                         ftc = cfr.wtc.mtc(1:vstin);
@@ -226,15 +226,19 @@ for i = 1:sn
                 scre = scmax;
                 scri = scmin;
                 %%%%%%%%%%%
-%                 tc = cur.sctc.tc;
-%                 for t = 1:size(tc,1)
-%                     tc(t,:) = cn(tc(t,:),'an');
-%                 end
-%                 sctc = fmean2(tc);
-%                 [scsi scmax scmin] = SI(sctc,sti);
-%                 sctc = sctc(1:vstin);
+                tc = cur.sctc.tc;
+                for t = 1:size(tc,1)
+                    tc(t,:) = cn(tc(t,:),'an');
+                end
+                sctc = fmean2(tc);
+                try
+                [scsi scmax scmin schw] = SI(sctc,sti);
+                catch err
+                    continue;
+                end
+                sctc = sctc(1:vstin);
                 %%%%%%%%%%%%%%%%
-                                sctc = cur.sctc.mtc(1:vstin);
+%                                 sctc = cur.sctc.mtc(1:vstin);
                 scfg = 0;
             end
             sind = cur.sessionindex;
@@ -279,6 +283,7 @@ for i = 1:sn
                 sis(vsn) = ssi;
                 maxs(vsn) = smax;
                 mins(vsn) = smin;
+                hws(vsn) = shw;
                 res(vsn) = sre;
                 ris(vsn) = sri;
                 %                 tcs(vsn,:) = stc;
@@ -288,6 +293,7 @@ for i = 1:sn
                 sif(vsn) = fsi;
                 maxf(vsn) = fmax;
                 minf(vsn) = fmin;
+                hwf(vsn) = fhw;
                 ref(vsn) = fre;
                 rif(vsn) = fri;
                 %                 tcf(vsn,:) = ftc;
@@ -297,6 +303,7 @@ for i = 1:sn
                 sisc(vsn) = scsi;
                 maxsc(vsn) = scmax;
                 minsc(vsn) = scmin;
+                hwsc(vsn) = schw;
                 resc(vsn) = scre;
                 risc(vsn) = scri;
                 %                 tcsc(vsn,:) = sctc;
@@ -400,6 +407,7 @@ switch type
         si.sis = sis;
         si.maxs = maxs;
         si.mins = mins;
+        si.hws = hws;
         si.res = res;
         si.ris = ris;
         si.tcs = tcs;
@@ -410,6 +418,7 @@ switch type
         si.sif = sif;
         si.maxf = maxf;
         si.minf = minf;
+        si.hwf = hwf;
         si.ref = ref;
         si.rif = rif;
         si.tcf = tcf;
@@ -420,6 +429,7 @@ switch type
         si.sisc = sisc;
         si.maxsc = maxsc;
         si.minsc = minsc;
+        si.hwsc = hwsc;
         si.resc = resc;
         si.risc = risc;
         si.tcsc = tcsc;

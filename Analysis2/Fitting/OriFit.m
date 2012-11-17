@@ -25,9 +25,25 @@ outliers = [];
 %     outliers = [];
 % end
 
-start = [meany        0    10    0];
-low =   [0          -180    5    0];
-up =    [maxy+stdy   180   180  maxy];
+
+
+switch lower(model)
+    case 'gau' % --- Gaussian Model
+        start = [meany        0    10    0];
+        low =   [0          -180    5    0];
+        up =    [maxy+stdy   180   180  maxy];
+        ftype = fittype('k*exp((-(x-u)^2)/(2*(c^2)))+b',...
+            'dependent',{'y'},'independent',{'x'},...
+            'coefficients',{'k', 'u', 'c', 'b'});
+    case 'dog' % --- Difference of Gaussian Model
+        start = [meany        0    10    0  meany        10    0];
+        low =   [0          -180    5    0   0           5    0];
+        up =    [maxy+stdy   180   180  maxy maxy+stdy  180  maxy];
+        ftype = fittype('(k1*exp((-(x-u)^2)/(2*(c1^2)))+b1)-(k2*exp((-(x-u)^2)/(2*(c2^2)))+b2)',...
+            'dependent',{'y'},'independent',{'x'},...
+            'coefficients',{'k1', 'u', 'c1', 'b1','k2','c2','b2'});
+end
+
 if ~isempty(varargin)
     vn = length(varargin);
     if vn<2
@@ -41,18 +57,11 @@ if ~isempty(varargin)
         up = varargin{3};
     end
 end
+
 fitopt = fitoptions('Method','NonlinearLeastSquares','Robust','Bisquare',...
     'Algorithm','Trust-Region','Lower',low,'Upper',up,'Startpoint',start,...
     'DiffMaxChange',60,'MaxFunEvals',32000,'MaxIter',30000,'TolFun',10e-8,...
     'TolX',10e-8,'Exclude',outliers);
-
-switch lower(model)
-    case 'gau' % --- Gaussian Model
-        ftype = fittype('k*exp((-(x-u)^2)/(2*(c^2)))+b',...
-            'dependent',{'y'},'independent',{'x'},...
-            'coefficients',{'k', 'u', 'c', 'b'});
-end
-
 
 [curvefit,goodness,fitinfo]=fit(x,y,ftype,fitopt);
 
