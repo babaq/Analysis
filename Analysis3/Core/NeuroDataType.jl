@@ -1,10 +1,16 @@
+module Analysis.Core
 # Neural Data Type Definations
+using Base
 
 ## Base Type ##
 type Vector3{T}
 	x::T
 	y::T
 	z::T
+end
+
+type UnitError <: Exception
+
 end
 
 ## Neural Type ##
@@ -34,6 +40,7 @@ type Segment
 	value::Vector{Float64}
 	time::Float64
 	delay::Float64
+	sortid
 end
 
 type SegmentSeries
@@ -78,6 +85,8 @@ end
 
 type Block
 	name::String
+	source
+	duration
 	description
 	setting::Dict
 	eventseriesgroup::Vector{EventSeries}
@@ -98,9 +107,10 @@ type Subject
 end
 
 type RecordSession
-	name
+	name::String
 	description
 	region
+	experimenter
 	date
 	blocks::Vector{Block}
 end
@@ -110,3 +120,5 @@ type Experiment
 	description
 	subjects::Vector{Subject}
 end
+
+end # end of module

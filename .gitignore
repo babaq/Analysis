@@ -1,5 +1,11 @@
+# Windows
 desktop.ini
+
+# Matlab
 *.asv
+
+# Sublime Text
+*sublime*.*
 
 
 
