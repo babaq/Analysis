@@ -108,6 +108,45 @@ for i=1:sn
                     muresult{ch,1}.block{j}.msm = squeeze(mean(sm{ch,sort}));
                     muresult{ch,1}.block{j}.sesm = squeeze(ste(sm{ch,sort}));
                     
+                     % Processing Spike Train Power Size Tuning
+                    TW = 3.5;
+                    params.tapers = [TW 2*TW-1];
+                    params.Fs = 1000; %DataSet.Wave.fs;
+                    params.fpass = freqlim;
+                    params.pad = 5;
+                    if issps
+                        scpsd = pspt(DataSet,ch,sort,params);
+                    else
+                        scpsd = corrps([],DataSet,200,1,ch,sort,ch,sort);
+                    end
+                    for pti = 1:length(ptrange)
+                        sctc{pti} = SCTC(scpsd,DataSet,ptrange);
+                        csctc{pti} = ctc(sctc{pti},DataSet);
+                    end
+                    % Spike Train Power Spectrum
+                    scps = getps(scpsd,freqlim);
+                    [mps se trial] = fmean(scps{1}.data);
+                    mps = nan20(mps);
+                    se = nan20(se);
+                    
+                    muresult{ch,1}.block{j}.scps.trial = trial;
+                    muresult{ch,1}.block{j}.scps.data = mps;
+                    muresult{ch,1}.block{j}.scps.se = se;
+                    muresult{ch,1}.block{j}.scps.frequencies = scps{end}.frequencies;
+                    
+                    for fb = 1:length(sctc)
+                        tc = sctc{fb}{1};
+                        [mtc setc] = fmean2(tc);
+                        mtc = reshape(mtc,length(sti{2}),length(sti{1}))';
+                        setc = reshape(setc,length(sti{2}),length(sti{1}))';
+                        mtc = nan20(mtc);
+                        setc = nan20(setc);
+                        
+                        muresult{ch,1}.block{j}.sctc{fb}.freqrange = sctc{fb}{2}.freqrange;
+                        muresult{ch,1}.block{j}.sctc{fb}.mtc = mtc;
+                        muresult{ch,1}.block{j}.sctc{fb}.setc = setc;
+                    end
+                    
                 else
                     disp(['The neural signal in Ch-',num2str(ch),'__Sort-MU',...
                         ' is NOT significently modulated and will be deleted.']);

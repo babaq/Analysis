@@ -1,0 +1,561 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Spik",
+				"SpikeTrain"
+			],
+			[
+				"spik",
+				"spiketrain"
+			],
+			[
+				"Neu",
+				"NeuroShare"
+			],
+			[
+				"ns",
+				"nslibfile"
+			],
+			[
+				"Epo",
+				"EpochSeries"
+			],
+			[
+				"ch",
+				"ChannelCluster"
+			],
+			[
+				"Ev",
+				"EventSeries"
+			],
+			[
+				"U",
+				"Unit"
+			],
+			[
+				"Ve",
+				"Vector"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Core/NeuroDataType.jl",
+			"settings":
+			{
+				"buffer_size": 1679,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
+			"settings":
+			{
+				"buffer_size": 1886,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Core/NeuroDataQuery.jl",
+			"settings":
+			{
+				"buffer_size": 223,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Core/NeuroDataPrepare.jl",
+			"settings":
+			{
+				"buffer_size": 127,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "IO/NeuroShareIO.jl",
+			"settings":
+			{
+				"buffer_size": 491,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "IO/NeuroShare.jl",
+			"settings":
+			{
+				"buffer_size": 5141,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "IO/TDTIO.jl",
+			"settings":
+			{
+				"buffer_size": 105,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/unit.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/spiketrain.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/spike.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
+		"/E/Software/Analysis/README.md",
+		"/F/SkyDrive/Alex-Joyce/Alex/Alex.svg",
+		"/E/Experiment/Cat_50/Cat_50.xml",
+		"/E/Software/Analysis/Analysis5/Core/NeuroDataType.fsx",
+		"/E/Software/StiLib/Release/StiLib.dll.config",
+		"/C/Users/Alex/.gitconfig",
+		"/C/Users/Alex/PUTTY.RND",
+		"/C/Users/Alex/FunShion.ini",
+		"/C/Users/Alex/_viminfo",
+		"/C/Users/Alex/.recently-used.xbel",
+		"/C/Users/Alex/.kdiff3rc",
+		"/C/Users/Alex/.bash_history",
+		"/E/Software/Analysis/Analysis5/Core/NeuroDataType.fs",
+		"/E/Software/Analysis/Analysis4/Core/NeuroDataType.jl",
+		"/E/Software/Analysis/Analysis2/PreProcess.m",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/base.jl",
+		"/E/Software/Analysis/Analysis3/IO/TDTIO.jl",
+		"/E/Software/Analysis/Analysis3/IO/NeuroShareIO.jl",
+		"/E/Software/Analysis/Analysis3/Core/NeuroDataPrepare.jl",
+		"/E/Software/Analysis/Analysis3/IO/NeuroShare.jl",
+		"/E/Software/Analysis/Analysis3/Core/NeuroDataQuery.jl",
+		"/E/Software/Analysis/Analysis3/Core/NeuroDataType.jl",
+		"/C/Users/Alex/Desktop/rasterandpsth.m",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/baseneo.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/tdtio.py",
+		"/E/Software/Analysis/LICENSE.md",
+		"/C/Users/Alex/Desktop/气功-发掘神经系统的潜能",
+		"/E/Software/Soul/LICENSE.md",
+		"/E/Software/StiLib/LICENSE.md",
+		"/E/Software/Soul1/License.txt",
+		"/E/Software/Soul/VERSION.md",
+		"/E/Software/Soul/SCoreTest01/Program.cs",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Users/Alex/Desktop/户档.txt",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/math_libm.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/util.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/osutils.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/os_detect.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/math.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/librandom.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/client.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/fftw.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/cell.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/blas.jl",
+		"/E/Software/Analysis/Analysis3/Analysis3.sublime-project",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/asciisignalio.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/neuroshareio.py",
+		"/C/Users/Alex/Desktop/Matlab-Import-Filter_2_5/RequiredResources/ns_GetEntityInfo.m",
+		"/C/Users/Alex/Desktop/Matlab-Import-Filter_2_5/RequiredResources/ns_OpenFile.m",
+		"/C/Users/Alex/Desktop/Matlab-Import-Filter_2_5/RequiredResources/ns_SetLibrary.m",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/tools.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/winedrio.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/winwcpio.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/baseio.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/asciispiketrainio.py",
+		"/E/Software/Analysis/Analysis3/Core/NeuroDataQuery",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/array.jl",
+		"/E/Lab/julia-7076ab06f1/lib/julia/base/abstractarray.jl",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/io/io.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/analogsignal.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/base.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/block.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/epoch.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/event.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/globalvars.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/neuron.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/oscillation.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/recordingpoint.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/respirationsignal.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/segment.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/spike.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/spiketrain.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/OpenElectrophy/classes/sqlalchemyutil.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/startOpenElectrophy.py",
+		"/C/Users/Alex/Desktop/trunk-r520/trunk/setup.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/examples/read_files.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/examples/simple_plot_with_matplotlib.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/doc/source/conf.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/setup.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/neomatlabio.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/exampleio.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/__init__.py",
+		"/E/Software/Analysis/Analysis3/NeuroDataType.jl",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/__init__.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/description.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/version.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/recordingchannelgroup.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/recordingchannel.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/irregularlysampledsignal.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/eventarray.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/event.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/epocharray.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/epoch.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/block.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/analogsignalarray.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/analogsignal.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/__init__.py",
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/AUTHORS",
+		"/C/Users/Alex/Desktop/julia-master/julia-master/Makefile",
+		"/C/Users/Alex/Desktop/julia-master/julia-master/README.md",
+		"/C/Users/Alex/Desktop/julia-master/julia-master/Make.inc",
+		"/C/Users/Alex/Desktop/julia-master/julia-master/VERSION",
+		"/E/Software/Analysis/ReadMe.md",
+		"/C/Users/Alex/Desktop/test.jl"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Segment",
+			"UnitAssemble",
+			"Alex-Joyce",
+			"74",
+			"202",
+			"74",
+			"class",
+			"struct",
+			"class",
+			"description",
+			"descreption",
+			"discreption",
+			"time",
+			"list",
+			"vector",
+			"vector3",
+			"duration",
+			"time",
+			"String",
+			"name",
+			"starttime",
+			"name"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"name",
+			"name:String"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Core/NeuroDataType.jl",
+					"settings":
+					{
+						"buffer_size": 1679,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								721,
+								721
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1530.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
+					"settings":
+					{
+						"buffer_size": 1886,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1857,
+								1857
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 405.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Core/NeuroDataQuery.jl",
+					"settings":
+					{
+						"buffer_size": 223,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								200,
+								200
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Core/NeuroDataPrepare.jl",
+					"settings":
+					{
+						"buffer_size": 127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								114,
+								114
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 4,
+					"file": "IO/NeuroShareIO.jl",
+					"settings":
+					{
+						"buffer_size": 491,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								182,
+								182
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "IO/NeuroShare.jl",
+					"settings":
+					{
+						"buffer_size": 5141,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								167,
+								167
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "IO/TDTIO.jl",
+					"settings":
+					{
+						"buffer_size": 105,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								90,
+								90
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.467024539877,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/E/Software/Analysis/Analysis3/Analysis3.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
