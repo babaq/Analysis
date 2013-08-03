@@ -1,7 +1,7 @@
-function [ chc ] = TTReadSnip( TX,eventname,options, varargin )
+function [ chc ] = TTReadSnip( TTX,eventname,options, varargin )
 %TTREADSNIP Summary of this function goes here
 %   Detailed explanation goes here
-import Analysis.Core.* Analysis.IO.TDTIO.* Analysis.IO.TDTIO.TTankX.*
+import Analysis.Core.* Analysis.IO.TDTIO.* Analysis.IO.TDTIO.TTank.*
 
 if nargin<3
     options.readoptions = 'FILTERED';
@@ -24,8 +24,8 @@ else % TDT Online-Sorted
     % begin with Unsorted(0)
     sortstart = 0;
 end
-evinfob = BNEvInfo(CurBlockNotes(TX),evname);
-if ~SetUseSortName(TX,sortset);
+evinfob = BNEvInfo(CurBlockNotes(TTX),evname);
+if ~SetUseSortName(TTX,sortset);
     error('Sort Profile: %s Set Failed.',sortset);
 end
 
@@ -33,22 +33,22 @@ chc = ChannelCluster('all');
 for i = 1:evinfob.NumChan
     ch = Channel(i);
     s = 1; % sort counting
-    for j = sortstart:Globals.MaxSort
-        ResetFilters(TX);
-        if ~SetFilterWithDescEx(TX,['chan=',num2str(i),' and sort=',num2str(j)]);
+    for j = sortstart:TGlobal.MaxSort
+        ResetFilters(TTX);
+        if ~SetFilterWithDescEx(TTX,['chan=',num2str(i),' and sort=',num2str(j)]);
             error('Filter Failed.');
         end
-        snipn=ReadEventsV(TX,Globals.MaxRet,evname, 0, 0, 0, 0,options.readoptions);
-        if snipn == Globals.MaxRet
+        snipn=ReadEventsV(TTX,TGlobal.MaxRead,evname, 0, 0, 0, 0,options.readoptions);
+        if snipn == TGlobal.MaxRead
             warning('Maximum number of records(%d) is returned indicating more records in the event',...
                 snipn);
         elseif snipn==0 % end of sortcode
             break;
         end
         
-        tst = ParseEvInfoV(TX,0,snipn,6);
+        tst = ParseEvInfoV(TTX,0,snipn,6);
         if options.isreadspikewave
-            tsw = ParseEvV(TX,0,snipn);
+            tsw = ParseEvV(TTX,0,snipn);
         end
         
         st = SpikeTrain(eventname);
@@ -66,5 +66,5 @@ for i = 1:evinfob.NumChan
     end
     chc.channels(i,1) = ch;
 end
-ResetFilters(TX);
+ResetFilters(TTX);
 

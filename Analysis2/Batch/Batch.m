@@ -53,6 +53,8 @@ if isempty(TargetIndex)
             else
                 blocktypeerror = 1;
             end
+        case 'stsc'
+            BSTsc;
     end
 else
     switch Method

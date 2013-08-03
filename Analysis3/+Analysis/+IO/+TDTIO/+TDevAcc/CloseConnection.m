@@ -1,7 +1,7 @@
-function [  ] = CloseConnection( TDA )
+function [  ] = CloseConnection( TDAX )
 %CLOSECONNECTION Summary of this function goes here
 %   Detailed explanation goes here
 
-TDA.CloseConnection();
+TDAX.CloseConnection();
 end
 

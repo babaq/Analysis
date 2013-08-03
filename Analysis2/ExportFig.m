@@ -6,6 +6,7 @@ function ExportFig(hfig,format)
 
 % File Format
 eps = '-depsc2';
+ill = '-dill';
 jpg = '-djpeg';
 pdf = '-dpdf';
 png = '-dpng';

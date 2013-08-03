@@ -21,6 +21,10 @@ if nargin < 3
             dist = si.(type);
             bin = si.bin;
             xu = 'SI';
+        case 'sc'
+            dist = si.(type);
+            bin = 0:0.1:1.4;
+            xu = 'F1/F0';
         case {'fgs','fgf','fgsc'}
             dist = si.(type);
             bin = (0:0.1:1);

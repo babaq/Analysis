@@ -29,6 +29,9 @@ ptrange{1} = [15 30];
 ptrange{2} = [30 100];
 ptrange{3} = [100 150];
 
+% ptrange{1} = [30 60];
+% ptrange{2} = [60 100];
+
 sn=size(SessionIndex,1);
 % batch each session
 for i=1:sn

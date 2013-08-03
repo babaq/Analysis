@@ -1,10 +1,10 @@
-function [ hr ] = ConnectServer( TDA ,servername)
+function [ hr ] = ConnectServer( TDAX ,servername)
 %CONNECTSERVER Initiates a connection with an OpenWorkbench server
 %   Detailed explanation goes here
 if nargin < 2
     servername = 'Local';
 end
-hr = TDA.ConnectServer(servername);
+hr = TDAX.ConnectServer(servername);
 if hr==0
     hr = false;
 else

@@ -27,7 +27,7 @@ for i = 1:sn
             sfitg = cur.goodness.adjrsquare;
             ffit = cfr.wtc.curvefit;
             ffitg = cfr.wtc.goodness.adjrsquare;
-            if 1%sfitg>0.1 && ffitg>0.1
+            if sfitg>0.5 && ffitg>0.5
                 
                 sfitc = coeffvalues(sfit);
                 sfitcb = confint(sfit,0.95);
@@ -185,6 +185,31 @@ for i = 1:sn
             chan = cur.ch;
             sort = cur.sortid;
             isv = 1;
+        case 'stsc'
+            ssi = cur.si(1);
+            smax = cur.si(2);
+            smin = cur.si(3);
+            sre = smax;
+            sri = smin;
+            sfg = 0;
+            %%%%%%%%%%%%%%%
+            tc = cur.tc;
+            for t = 1:size(tc,1)
+                tc(t,:) = cn(tc(t,:),'an');
+            end
+            stc = fmean2(tc);
+            [ssi smax smin shw] = SI(stc,sti);
+            stc = stc(1:vstin);
+            %%%%%%%%%%%%%%%
+%                         stc = cur.mtc(1:vstin);
+            sf0 = cur.sc(1);
+            sf1 = cur.sc(2);
+            
+            sind = cur.sessionindex;
+            chan = cur.ch;
+            sort = cur.sortid;
+            rsite = cur.site;
+            isv = 1;
         otherwise
             cfr = SBST{i,2};
             ssi = cur.si(1);
@@ -234,7 +259,7 @@ for i = 1:sn
                 try
                 [scsi scmax scmin schw] = SI(sctc,sti);
                 catch err
-                    continue;
+                    %continue;
                 end
                 sctc = sctc(1:vstin);
                 %%%%%%%%%%%%%%%%
@@ -279,6 +304,23 @@ for i = 1:sn
                 sessionindex(vsn) = sind;
                 ch(vsn) = chan;
                 sortid(vsn) = sort;
+            case 'stsc'
+                sis(vsn) = ssi;
+                maxs(vsn) = smax;
+                mins(vsn) = smin;
+                hws(vsn) = shw;
+                res(vsn) = sre;
+                ris(vsn) = sri;
+                %                 tcs(vsn,:) = stc;
+                tcs(vsn,:) = cn(stc,'an');
+                fgs(vsn) = sfg;
+                f0s(vsn) = sf0;
+                f1s(vsn) = sf1;
+                                
+                sessionindex(vsn) = sind;
+                ch(vsn) = chan;
+                sortid(vsn) = sort;
+                site(vsn) = rsite;
             otherwise
                 sis(vsn) = ssi;
                 maxs(vsn) = smax;
@@ -403,6 +445,27 @@ switch type
         si.sessionindex = sessionindex;
         si.ch = ch;
         si.sortid = sortid;
+    case 'stsc'
+        si.sis = sis;
+        si.maxs = maxs;
+        si.mins = mins;
+        si.hws = hws;
+        si.res = res;
+        si.ris = ris;
+        si.tcs = tcs;
+        si.mtcs = mean(tcs,1);
+        si.tcses = ste(tcs,0,1);
+        si.fgs = fgs;
+        si.f0s = f0s;
+        si.f1s = f1s;
+        si.sc = f1s./f0s;
+        
+        si.sessionindex = sessionindex;
+        si.ch = ch;
+        si.sortid = sortid;
+        si.site = site;
+        si.bin = (0:0.1:1);
+        si.sti = vsti;
     otherwise
         si.sis = sis;
         si.maxs = maxs;
@@ -433,8 +496,9 @@ switch type
         si.resc = resc;
         si.risc = risc;
         si.tcsc = tcsc;
-        si.mtcsc = mean(tcsc,1);
-        si.tcsesc = ste(tcsc,0,1);
+        [si.mtcsc,si.tcsesc] = fmean2(tcsc);
+        %si.mtcsc = mean(tcsc,1);
+        %si.tcsesc = ste(tcsc,0,1);
         si.fgsc = fgsc;
         
         si.sessionindex = sessionindex;

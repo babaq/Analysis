@@ -4,14 +4,6 @@
 		"selected_items":
 		[
 			[
-				"Spik",
-				"SpikeTrain"
-			],
-			[
-				"spik",
-				"spiketrain"
-			],
-			[
 				"Neu",
 				"NeuroShare"
 			],
@@ -50,54 +42,6 @@
 				"buffer_size": 1679,
 				"line_ending": "Windows"
 			}
-		},
-		{
-			"file": "/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
-			"settings":
-			{
-				"buffer_size": 1886,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Core/NeuroDataQuery.jl",
-			"settings":
-			{
-				"buffer_size": 223,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Core/NeuroDataPrepare.jl",
-			"settings":
-			{
-				"buffer_size": 127,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "IO/NeuroShareIO.jl",
-			"settings":
-			{
-				"buffer_size": 491,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "IO/NeuroShare.jl",
-			"settings":
-			{
-				"buffer_size": 5141,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "IO/TDTIO.jl",
-			"settings":
-			{
-				"buffer_size": 105,
-				"line_ending": "Windows"
-			}
 		}
 	],
 	"build_system": "",
@@ -124,22 +68,61 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/unit.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/spiketrain.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/spike.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
+		"/E/Lab/ShellScript/test.ps1",
+		"/E/Software/Soul/.gitattributes",
+		"/E/Software/Soul/.gitignore",
+		"/C/Users/Li/Desktop/Desktop/气功-发掘神经系统的潜能",
+		"/E/Software/StiLib/.gitignore",
+		"/E/Software/StiLib/.gitattributes",
+		"/C/Users/Li/Desktop/StiLib/Content/Content.contentproj",
+		"/C/Users/Li/Desktop/StiLib/app.config",
+		"/C/Users/Li/Desktop/Desktop/户档.txt",
+		"/C/Windows/System32/Drivers/etc/hosts",
+		"/F/Download/从神迹走出的强者1~726章/从神迹走出的强者1~726章.txt",
+		"/C/Users/Li/Desktop/trunk-r520/trunk/OpenElectrophy/computing/timefrequency/linedetection/detectalllines.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/setup.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/examples/simple_plot_with_matplotlib.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/examples/read_files.py",
+		"/F/SkyDrive/Alex-Joyce/Alex/hosts",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/core/unit.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/core/baseneo.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/core/analogsignalarray.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/io/baseio.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/io/tools.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/io/neuroshareio.py",
+		"/C/Users/Li/Desktop/neo-0.2.0/neo-0.2.0/neo/core/__init__.py",
+		"/E/Software/Analysis/LICENSE.md",
 		"/E/Software/Analysis/README.md",
 		"/F/SkyDrive/Alex-Joyce/Alex/Alex.svg",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/test/test_spiketrain.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/test/test_unit.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/core/spiketrain.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/core/unit.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/core/spike.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/core/eventarray.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/neo/core/event.py",
+		"/F/Desktop/neo-0.2.0/neo-0.2.0/examples/read_files.py",
+		"/E/Experiment/Experiment.md",
+		"/E/Experiment/ExNote.md",
 		"/E/Experiment/Cat_50/Cat_50.xml",
-		"/E/Software/Analysis/Analysis5/Core/NeuroDataType.fsx",
-		"/E/Software/StiLib/Release/StiLib.dll.config",
-		"/C/Users/Alex/.gitconfig",
-		"/C/Users/Alex/PUTTY.RND",
-		"/C/Users/Alex/FunShion.ini",
-		"/C/Users/Alex/_viminfo",
-		"/C/Users/Alex/.recently-used.xbel",
-		"/C/Users/Alex/.kdiff3rc",
-		"/C/Users/Alex/.bash_history",
+		"/C/Users/Li/Desktop/hosts",
+		"/C/Windows/System32/Drivers/etc/hosts - 副本",
+		"/E/Experiment/ExNote.txt",
+		"/E/Software/StiLib/README.md",
+		"/E/Lab/Electrophysiology/TDT System 3/TDT Upgrade Package/TDTNeuroShareKit/test_input.stb",
+		"/F/Software/InternetTool/FreeGate/dtwpc.dat",
+		"/F/Software/InternetTool/goagent-v2.1.11/README",
+		"/F/SkyDrive/Alex-Joyce/Alex/Alex-ZL-Laptop.svg",
+		"/F/SkyDrive/Alex-Joyce/Alex/ssh/known_hosts",
+		"/F/SkyDrive/Alex-Joyce/Alex/ssh/id_rsa.pub",
+		"/C/Users/Li/.ssh/github_rsa.pub",
+		"/media/alex/Work/Software/Analysis/Analysis4/Core/NeuroDataType.jl",
+		"/media/alex/Work/Software/Analysis/Analysis4/Core/NeuroDataQuery.jl",
+		"/media/alex/Work/Software/Analysis/Analysis4/Core/NeuroDataPrepare.jl",
+		"/media/alex/Work/Software/Analysis/Analysis4/IO/TDTIO.jl",
+		"/media/alex/Work/Software/Analysis/Analysis4/IO/NeuroShare.jl",
+		"/media/alex/Work/Software/Analysis/Analysis4/IO/NeuroShareIO.jl",
 		"/E/Software/Analysis/Analysis5/Core/NeuroDataType.fs",
 		"/E/Software/Analysis/Analysis4/Core/NeuroDataType.jl",
 		"/E/Software/Analysis/Analysis2/PreProcess.m",
@@ -153,7 +136,6 @@
 		"/C/Users/Alex/Desktop/rasterandpsth.m",
 		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/baseneo.py",
 		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/io/tdtio.py",
-		"/E/Software/Analysis/LICENSE.md",
 		"/C/Users/Alex/Desktop/气功-发掘神经系统的潜能",
 		"/E/Software/Soul/LICENSE.md",
 		"/E/Software/StiLib/LICENSE.md",
@@ -213,25 +195,7 @@
 		"/E/Software/Analysis/Analysis3/NeuroDataType.jl",
 		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/__init__.py",
 		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/description.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/version.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/recordingchannelgroup.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/recordingchannel.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/irregularlysampledsignal.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/eventarray.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/event.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/epocharray.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/epoch.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/block.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/analogsignalarray.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/analogsignal.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/__init__.py",
-		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/AUTHORS",
-		"/C/Users/Alex/Desktop/julia-master/julia-master/Makefile",
-		"/C/Users/Alex/Desktop/julia-master/julia-master/README.md",
-		"/C/Users/Alex/Desktop/julia-master/julia-master/Make.inc",
-		"/C/Users/Alex/Desktop/julia-master/julia-master/VERSION",
-		"/E/Software/Analysis/ReadMe.md",
-		"/C/Users/Alex/Desktop/test.jl"
+		"/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/version.py"
 	],
 	"find":
 	{
@@ -249,7 +213,6 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"Segment",
 			"UnitAssemble",
 			"Alex-Joyce",
 			"74",
@@ -305,94 +268,14 @@
 						"selection":
 						[
 							[
-								721,
-								721
+								152,
+								152
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage",
 							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1530.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/Alex/Desktop/neo-0.2.0/neo-0.2.0/neo/core/segment.py",
-					"settings":
-					{
-						"buffer_size": 1886,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1857,
-								1857
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 405.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Core/NeuroDataQuery.jl",
-					"settings":
-					{
-						"buffer_size": 223,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								200,
-								200
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Core/NeuroDataPrepare.jl",
-					"settings":
-					{
-						"buffer_size": 127,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								114,
-								114
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -403,89 +286,8 @@
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 4,
-					"file": "IO/NeuroShareIO.jl",
-					"settings":
-					{
-						"buffer_size": 491,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								182,
-								182
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "IO/NeuroShare.jl",
-					"settings":
-					{
-						"buffer_size": 5141,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								167,
-								167
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "IO/TDTIO.jl",
-					"settings":
-					{
-						"buffer_size": 105,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								90,
-								90
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Julia.tmbundle/Syntaxes/Julia.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -517,7 +319,7 @@
 		"cols":
 		[
 			0.0,
-			0.467024539877,
+			0.692434942171,
 			1.0
 		],
 		"rows":

@@ -8,6 +8,13 @@ classdef CellAssemble < handle
     end
     
     methods
+        function ca = CellAssemble(n)
+            import Analysis.Core.Cell
+            ca.cells = Cell.empty;
+            if nargin==1
+                ca.name = n;
+            end
+        end
     end
     
 end

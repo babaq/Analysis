@@ -15,11 +15,11 @@ classdef SpikeTrain < handle
                 st.name = n;
             end
         end
-        function stt = SpikeTrainTime(obj)
+        function ts = Times(obj)
             nsp = length(obj.spikes);
-            stt = zeros(nsp,1);
+            ts = zeros(nsp,1);
             for i = 1:nsp
-                stt(i) = obj.spikes(i).time;
+                ts(i) = obj.spikes(i).time;
             end
         end
     end

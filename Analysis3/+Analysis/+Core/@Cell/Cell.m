@@ -4,9 +4,12 @@ classdef Cell < handle
     
     properties
         name
+        channel
+        sort
         type
         coordinate
-        spiketrain
+        aptimes
+        apinfo
     end
     
     methods

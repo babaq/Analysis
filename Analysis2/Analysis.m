@@ -22,7 +22,7 @@ function varargout = Analysis(varargin)
 
 % Edit the above text to modify the response to help Analysis
 
-% Last Modified by GUIDE v2.5 16-Apr-2012 11:20:51
+% Last Modified by GUIDE v2.5 15-Jan-2013 16:11:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -618,4 +618,3 @@ function method_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-

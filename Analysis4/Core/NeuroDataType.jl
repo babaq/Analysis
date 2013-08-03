@@ -1,6 +1,5 @@
-module Analysis.Core
+module Core
 # Neural Data Type Definations
-using Base
 
 ## Base Type ##
 type Vector3{T}
@@ -14,6 +13,21 @@ type CellError <: Exception
 end
 
 ## Neural Type ##
+
+type Spike
+	channel::Uint64
+	fs::Float64
+	value::Vector{Float64}
+	time::Float64
+	delay::Float64
+	sort
+end
+
+type SpikeTrain
+	name::String
+	spikes::Vector{Spike}
+end
+
 type Channel
 	name::String
 	index::Uint64
@@ -34,21 +48,6 @@ type AnalogSignal
 	fs::Float64
 	value::Vector{Float64}
 	startime::Float64
-end
-
-# ActionPotential or Spike
-type Spike
-	channel::Uint64
-	fs::Float64
-	value::Vector{Float64}
-	time::Float64
-	delay::Float64
-	sort
-end
-
-type SpikeTrain
-	name::String
-	spikes::Vector{Spike}
 end
 
 type Event
@@ -76,7 +75,7 @@ end
 
 type Cell
 	name::String
-	type
+	celltype
 	coordinate::Vector3{Float64}
 	spiketrain::Vector{Float64}
 end
@@ -100,6 +99,15 @@ type Block
 	channelclustergroup::Vector{ChannelCluster}
 end
 
+type RecordSession
+	name::String
+	description
+	region
+	date
+	experimenters::Vector{String}
+	blocks::Vector{Block}
+end
+
 type Subject
 	name::String
 	description
@@ -109,15 +117,6 @@ type Subject
 	height
 	weight
 	recordsessions::Vector{RecordSession}
-end
-
-type RecordSession
-	name::String
-	description
-	region
-	date
-	experimenters::Vector{String}
-	blocks::Vector{Block}
 end
 
 type Experiment

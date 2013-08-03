@@ -9,7 +9,7 @@ classdef Block < handle
         startime
         stoptime
         duration
-        settings
+        config
         eventseriesgroup
         epochseriesgroup
         cellassemblegroup
@@ -17,7 +17,7 @@ classdef Block < handle
     end
     
     methods
-        function blk = Block(n)
+        function blk = Block(n,s)
             import Analysis.Core.*
             blk.eventseriesgroup = EventSeries.empty;
             blk.epochseriesgroup = EpochSeries.empty;
@@ -29,6 +29,13 @@ classdef Block < handle
             if nargin==1
                 blk.name = n;
             end
+            if nargin==2
+                blk.name = n;
+                blk.source = s;
+            end
+        end
+        function save(block,filefullname)
+            save(filefullname,'block');
         end
     end
     

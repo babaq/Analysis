@@ -14,7 +14,7 @@ function ns_GetLibraryInfo()
 end
 
 function ns_OpenFile()
-	ccall(dlsym(nslib,:ns_OpenFile),fileinfo,(),)
+	ccall(dlsym(njuliaslib,:ns_OpenFile),fileinfo,(),)
 
 end
 

@@ -15,7 +15,7 @@ ssttype = si.info.ssttype;
 
 z = si.site;
 zu = 'Recording Site Depth (\mum)';
-zlim = max(z)+100;
+zlim = 3000;%max(z)+100;
 dec = 1000;
 switch type
     case 'sf'
@@ -42,14 +42,26 @@ switch type
         x = x(ei);
         z1 = z(ei);
         z2 = z(ii);
+    case 'sc'
+        x = si.(type);
+        stat = '';
+        [xu lim] = datatype(type);
+        n1 = length(x);
+        n2 = n1;
+        z1 = z;
+        z2 = z;
+        y = x;
 end
 
 
     function [u lim] = datatype(dtype)
         switch dtype
             case {'sis','sif','sisc'}
-                lim = si.bin(end);
+                lim = si.bin(end)*2;
                 u = 'SI';
+            case 'sc'
+                lim = 1.4;
+                u = 'F1/F0';
             case {'fgs','fgf','fgsc'}
                 lim = si.bin(end);
                 u = 'Fit Adj-R^2';
@@ -86,9 +98,9 @@ mcolorg = [0.25 0.85 0.35];
 mcolorr = [0.85 0.15 0.05];
 mcr = ['{',num2str(mcolorr),'}'];
 
-plot(x,z1,'o','Linewidth',1,'MarkerSize',8,'MarkerEdgeColor','k','MarkerFaceColor',mcolorr);
+plot(x,z1,'o','Linewidth',1,'MarkerSize',7,'MarkerEdgeColor','none','MarkerFaceColor',mcolorr);
 hold on;
-plot(y,z2,'o','Linewidth',1,'MarkerSize',8,'MarkerEdgeColor','k','MarkerFaceColor',mcolorb);
+plot(y,z2,'o','Linewidth',1,'MarkerSize',7,'MarkerEdgeColor','none','MarkerFaceColor',mcolorb);
 set(gca,'LineWidth',2,'FontSize',textsize,'YLim',[0 zlim],'XLim',[0 lim],'box','off','YDir','reverse');
 
 annotation('textbox',[0.14 0.8 0.1 0.1],'FontSize',textsize,'LineStyle','none',...

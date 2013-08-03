@@ -254,9 +254,9 @@ switch type
             %                         errorbar(X,y,yse,'.','color',cc,'linewidth',1);
             %                         hold on;
             estep = 9; %9;%18;
-            %                                     ep = 1:estep:length(X);
-            %                                     plot([X(ep); X(ep)],[y(ep)'-yse(ep)'; y(ep)'+yse(ep)'],'color',cc,'linewidth',errorbarwidth);
-            %                                     hold on;
+                                                ep = 1:estep:length(X);
+                                                plot([X(ep); X(ep)],[y(ep)'-yse(ep)'; y(ep)'+yse(ep)'],'color',cc,'linewidth',errorbarwidth);
+                                                hold on;
             %             plot(X,y+yse,':','color',cc,'linewidth',1);
             %             hold on;
             %             plot(X,y-yse,':','color',cc,'linewidth',1);

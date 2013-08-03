@@ -190,11 +190,17 @@ xlabel('ASI','FontSize',textsize);
         bin = 0:binw:2*pi;
         binx = bin+binw/2;
         binx(end) = binx(1);
-        thr = 0.0;
+        thr = 0.2;
         tys = ts(as>thr);
         tyf = tf(af>thr);
         tys2 = ts2(as2>thr);
         tyf2 = tf2(af2>thr);
+        
+%         nsf = length(find(as>thr & af>thr))
+%         ns = length(tys)
+%         nf = length(tyf)
+%         ns2 = length(tys2)
+%         nf2 = length(tyf2)
         
         [pus z] = circ_rtest(deg2rad(tys)*4);
         [puf z] = circ_rtest(deg2rad(tyf)*2);
