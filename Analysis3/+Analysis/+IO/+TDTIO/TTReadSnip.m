@@ -33,13 +33,13 @@ chc = ChannelCluster('all');
 for i = 1:evinfob.NumChan
     ch = Channel(i);
     s = 1; % sort counting
-    for j = sortstart:TGlobal.MaxSort
+    for j = sortstart:TDTGlobal.MaxSort
         ResetFilters(TTX);
         if ~SetFilterWithDescEx(TTX,['chan=',num2str(i),' and sort=',num2str(j)]);
             error('Filter Failed.');
         end
-        snipn=ReadEventsV(TTX,TGlobal.MaxRead,evname, 0, 0, 0, 0,options.readoptions);
-        if snipn == TGlobal.MaxRead
+        snipn=ReadEventsV(TTX,TDTGlobal.MaxRead,evname, 0, 0, 0, 0,options.readoptions);
+        if snipn == TDTGlobal.MaxRead
             warning('Maximum number of records(%d) is returned indicating more records in the event',...
                 snipn);
         elseif snipn==0 % end of sortcode

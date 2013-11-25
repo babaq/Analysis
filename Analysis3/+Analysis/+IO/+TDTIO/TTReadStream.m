@@ -17,8 +17,8 @@ for i = 1:evinfob.NumChan
     if ~SetFilterWithDescEx(TTX,['chan=',num2str(i)]);
         error('Filter Failed.');
     end
-    segn=ReadEventsV(TTX,TGlobal.MaxRead,eventname, 0, 0, 0, 0,options.readoptions);
-    if segn == TGlobal.MaxRead
+    segn=ReadEventsV(TTX,TDTGlobal.MaxRead,eventname, 0, 0, 0, 0,options.readoptions);
+    if segn == TDTGlobal.MaxRead
         warning('Maximum number of records(%d) is returned indicating more records in the event',...
             segn);
     elseif segn==0

@@ -5,7 +5,7 @@ function [  ] = ExportBlock( TTX,blocksource,blockname,events,options,exportpath
 import Analysis.Core.* Analysis.Base.* Analysis.IO.TDTIO.* Analysis.IO.TDTIO.TTank.*
 
 block = TTReadBlock(TTX,blocksource,blockname,events,options);
-block.config = ParseES(block.eventseriesgroup,options.esformat);
+block.param = ParseES(block.eventseriesgroup,options.esformat);
 block.cellassemblegroup = ParseCAGccg(block.channelclustergroup);
 
 filename = [block.source.tank,'__',block.name,'.mat'];

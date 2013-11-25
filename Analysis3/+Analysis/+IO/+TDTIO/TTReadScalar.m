@@ -9,8 +9,8 @@ end
 if nargin == 4
     evinfov = varargin{1};
 end
-nevent = ReadEventsV(TTX,TGlobal.MaxRead,eventname,0,0,0,0,options.readoptions);
-if nevent == TGlobal.MaxRead
+nevent = ReadEventsV(TTX,TDTGlobal.MaxRead,eventname,0,0,0,0,options.readoptions);
+if nevent == TDTGlobal.MaxRead
     warning('Maximum number of records(%d) is returned indicating more records in the event',...
         nevent);
 elseif nevent==0

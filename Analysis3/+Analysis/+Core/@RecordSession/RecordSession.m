@@ -6,6 +6,7 @@ classdef RecordSession < handle
         name
         description
         region
+        coordinate
         date
         experimenters
         blocks

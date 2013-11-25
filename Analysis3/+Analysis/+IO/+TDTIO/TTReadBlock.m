@@ -23,8 +23,8 @@ end
 bdata = Block(blockname,blocksource);
 t1 = CurBlockStartTime(TTX);
 t2 = CurBlockStopTime(TTX);
-bdata.startime = FancyTime(TTX,t1,TGlobal.TimeFormat);
-bdata.stoptime = FancyTime(TTX,t2,TGlobal.TimeFormat);
+bdata.startime = FancyTime(TTX,t1,TDTGlobal.TimeFormat);
+bdata.stoptime = FancyTime(TTX,t2,TDTGlobal.TimeFormat);
 bdata.duration = t2-t1;
 for i = 1:evn
     edata = TTReadEvent(TTX,events{i},options{i});

@@ -4,6 +4,7 @@ classdef Subject < handle
     
     properties
         name
+        id
         description
         contact
         gender

@@ -1,5 +1,5 @@
-classdef TGlobal
-    %TGLOBAL Summary of this class goes here
+classdef TDTGlobal
+    %TDTGLOBAL Summary of this class goes here
     %   Detailed explanation goes here
     
     properties(Constant)

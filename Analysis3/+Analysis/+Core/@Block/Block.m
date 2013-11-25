@@ -9,7 +9,10 @@ classdef Block < handle
         startime
         stoptime
         duration
-        config
+        param
+        paramsim
+        paramsub
+        condtests
         eventseriesgroup
         epochseriesgroup
         cellassemblegroup
