@@ -8,6 +8,7 @@ end
 
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
+disp('Reading VLab Binary File ...');
 if fastversion
     [ nTestType,szComment,nSpikeChannel,aTestType,aExpParam,aBehavParam,...
         aGraphParam,aTestSeries,aTrial,aFOREP,aResponseTime,aTrialStatus,aDepth2Match,...

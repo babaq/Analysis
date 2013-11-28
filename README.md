@@ -8,7 +8,7 @@ Analysis is a package including various neural data analysing programs.
 Each top folder contains corresponding version of Analysis.
 
 * Version 1: based on csv data format.
-* Version 2: connected directly to TDT TTank data.
+* Version 2: connect directly to TDT TTank database.
 * Version 3: __Current Version__ using object programming of matlab to 
 better organize the functions.
 * Version 4: __Experimental__ using Julia programming language.
