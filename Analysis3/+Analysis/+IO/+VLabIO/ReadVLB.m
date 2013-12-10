@@ -166,7 +166,7 @@ end
         trial.m_nV1                      = fread( fid, 1, 'int32' );
         trial.m_nV2                      = fread( fid, 1, 'int32' );
         
-        trial.m_ucActiveChannel          = fread( fid, 1, 'uint8' );
+        trial.m_ucActiveChannel          = fread( fid, 1, '*uint8' );
         trial.m_szComment                = ReadCString( fid );
         
         trial.m_nV3                      = fread( fid, 1, 'int32' );
@@ -178,7 +178,7 @@ end
         trial.m_nLFPChannels             = fread( fid, 1, 'int16' );
         trial.m_nLFPGain                 = fread( fid, supportchannel, 'int16' );
         
-        trial.m_wSpikeEvent              = ReadCArray( fid, 'uint16' );
+        trial.m_wSpikeEvent              = ReadCArray( fid, '*uint16' );
         trial.m_dSpikeTime               = ReadCArray( fid, 'uint32' );
         
         trial.m_wEyePointX               = ReadCArray( fid, 'float32' );

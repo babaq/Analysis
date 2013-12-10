@@ -11,7 +11,7 @@ ConnectServer(tx);
 OpenTank(tx,blocksource.tank,'R');
 
 block = TTReadBlock(tx,blocksource,'(Q1_4)-1',{'Mark' 'SP01_O' 'FP01'});
-block.config = ParseES(block.eventseriesgroup,'StiLib');
+block.param = ParseES(block.eventseriesgroup,'StiLib');
 block.cellassemblegroup = ParseCAGccg(block.channelclustergroup);
 
 CloseTank(tx);

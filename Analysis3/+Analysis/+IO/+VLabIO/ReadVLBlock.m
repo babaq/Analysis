@@ -3,7 +3,7 @@ function [ bdata ] = ReadVLBlock( vlbfile,fastversion )
 % Fast version uses Mex function that could save ~50% space and ~80% time
 
 if nargin ==1
-    fastversion = false;
+    fastversion = true;
 end
 
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
