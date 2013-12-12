@@ -2,8 +2,17 @@ function [] = psychophysical(block)
 
 cond = block.param.Condition;
 condn = height(cond);
-cts = block.condtests;
+cts = block.data.condtests;
 ctsn = height(cts);
+simpath = '//labsgi1/root/';
+condfig = cellfun(@(x)imread([simpath,x]),cond.FILENAME,'uniformoutput',false);
+condor3 = cellfun(@(x)str2double(x),cond.OR3);
+condsceneidpos = categorical(cond.SceneIDPos);
+csidp = categories(condsceneidpos);
+csidpn = length(csidp);
+condshape = categorical(cond.Shape);
+cshape = categories(condshape);
+cshapen = length(cshape);
 
 earlyts = cts.status=='Early';
 figonts = cellfun(@(x)~isempty(x),cts.figontime);
@@ -30,28 +39,27 @@ else
 end
 
 
-simpath = '//labsgi1/root/';
 econdidx = cts.condidx(efigonts);
-efig = cellfun(@(x)imread([simpath,x]),cond.FILENAME,'uniformoutput',false);
 eshape = cond{econdidx,'Shape'};
-esceneidpos = cond{econdidx,'SceneIDPos'};
+esidp = cond{econdidx,'SceneIDPos'};
 
 figure;
-subplot(6,24,1:24);
+vsidp = condn/csidpn;
+subplot(1+csidpn,vsidp,1:vsidp);
 hist(categorical(econdidx),categorical(1:condn));
-set(gca,'xtick',[],'xlim',[0 121]);
-for i=1:120
-subplot(6,24,24+i);
-image(efig{i});
+set(gca,'xtick',[],'xlim',[0 condn+1]);
+for i=1:condn
+subplot(1+csidpn,vsidp,vsidp+i);
+image(imrotate(condfig{i},condor3(i)));
 set(gca,'xtick',[],'ytick',[]);
 xlabel(num2str(i));
 end
 
 figure;
 subplot(2,1,1);
-hist(categorical(eshape));
+hist(categorical(eshape),cshape);
 subplot(2,1,2)
-hist(categorical(esceneidpos));
+hist(categorical(esidp),csidp);
 
 
 
@@ -60,14 +68,14 @@ hist(categorical(esceneidpos));
 
 earlyshapeimage = eshape == 'Image';
 earlyshapepatch = eshape == 'Patch';
-earlysceneidimage = esceneidpos(earlyshapeimage);
-earlysceneidpatch = esceneidpos(earlyshapepatch);
+earlysceneidimage = esidp(earlyshapeimage);
+earlysceneidpatch = esidp(earlyshapepatch);
 % earlysceneid = cellfun(@(x)regexp(x,'^(.*)x','tokens'),earlysceneid);
 % earlysceneid = cellfun(@(x)x(:),earlysceneid);
 %earlysceneid = cellfun(@(x,y)[x y],earlysceneid,earlyshape,'uniformoutput',false);
 
 
-ec = categorical(esceneidpos);
+ec = categorical(esidp);
 ecn = length(categories(ec));
 
 eci = categorical(earlysceneidimage);

@@ -1,6 +1,7 @@
 classdef VLabGlobal
-    %VLABGLOBAL Summary of this class goes here
-    %   Detailed explanation goes here
+    %VLABGLOBAL 
+    %   Only Single Unit should be recorded and each well sorted SU should be
+    %   recorded in different channel.
     
     properties(Constant)
         % Task States

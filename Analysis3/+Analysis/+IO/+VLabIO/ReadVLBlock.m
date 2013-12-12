@@ -27,9 +27,9 @@ aGraphParam   = ConvertParam(aGraphParam);
 blockname = aTestType{1};
 blocksource = vlbfile;
 bdata = Block(blockname,blocksource);
-bdata.paramsim = aGraphParam;
-bdata.paramsub = aBehavParam;
 
+aExpParam.TestType = blockname;
+aExpParam.DataSource = blocksource;
 aExpParam.SpikeFs = nSpikeShapeSampleRate;
 aExpParam.SpikeShape = fSpikeShape;
 aExpParam.ElectrodeDepth = nElectrodeDepth;
@@ -41,8 +41,12 @@ aExpParam.MajorChannel = ucMajorChannel;
 
 aExpParam.Condition = aTestSeries;
 bdata.param = aExpParam;
+bdata.param.SimulateParam = aGraphParam;
+bdata.param.SubjectParam = aBehavParam;
 
-bdata.condtests = aTrial;
+bdata.param.AnalysisParam.IsFastRead = fastversion;
+
+bdata.data.condtests = aTrial;
 
 end
 

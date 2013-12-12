@@ -20,6 +20,5 @@ for i=1:length(cond)
 end
 
 ct = struct2table(ct);
-ct.condidx = (1:height(ct))';
 
 end

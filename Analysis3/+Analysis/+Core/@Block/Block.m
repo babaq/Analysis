@@ -10,9 +10,7 @@ classdef Block < handle
         stoptime
         duration
         param
-        paramsim
-        paramsub
-        condtests
+        data
         eventseriesgroup
         epochseriesgroup
         cellassemblegroup

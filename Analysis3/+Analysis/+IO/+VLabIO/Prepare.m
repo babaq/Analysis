@@ -1,15 +1,16 @@
 function [ pblock ] = Prepare( vlblock )
-%PREPARE Organize VLab Data According to Experiment Design
+%PREPARE Prepare VLab Block Data
 %   Detailed explanation goes here
 
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
 if isa(vlblock,'char')
-    vlblock = ReadVLBlock(vlblock,1);
+    vlblock = ReadVLBlock(vlblock,true);
 end
 
 disp('Preparing Block Data ...');
-cts = struct2table(vlblock.condtests);
+% Prepare Condition Test Data
+cts = struct2table(vlblock.data.condtests);
 cts.Properties.VariableNames{'m_wFigDelay'} = 'figdelay';
 cts.Properties.VariableNames{'m_dTime'} = 'condtestdur';
 cts.condtestdur = single(cts.condtestdur);
@@ -41,7 +42,6 @@ cts.Properties.VariableNames{'m_nKeyAction'} = 'keyaction';
 cts.Properties.VariableNames{'m_dFPTime'} = 'fptime';
 cts.Properties.VariableNames{'m_bFPAction'} = 'fpaction';
 cts.Properties.VariableNames{'m_nLFPSample'} = 'lfpsample';
-cts.condtestidx = (1:height(cts))';
 cts.condidx = cts.condidx + 1;
 cts.trialidx = cts.trialidx + 1;
 
@@ -57,6 +57,10 @@ cts.targetontime = cellfun(@(x,y)single(y(x==VLabGlobal.TARGET_ON)),cts.fpaction
         r = sqrt(x.^2+y.^2);
         ep = [x y r];
     end
+if isa(cts.m_wEyePointX,'uint16')
+    cts.m_wEyePointX = single(cts.m_wEyePointX);
+    cts.m_wEyePointY = single(cts.m_wEyePointY);
+end
 cts.eyepoint = cellfun(@ConvertEyeCoor,cts.m_wEyePointX,cts.m_wEyePointY,num2cell(cts.hv0(:,1)),num2cell(cts.hv0(:,2)),...
     num2cell(cts.dtoa(:,1)),num2cell(cts.dtoa(:,2)),num2cell(cts.dtoa2(:,1)),num2cell(cts.dtoa2(:,2)),'uniformoutput',false);
 cts.eyepointtime = cellfun(@(x)single(x),cts.eyepointtime,'uniformoutput',false);
@@ -89,20 +93,26 @@ cts.activechannel = arrayfun(@(x)logical(bitget(x,1:8)),cts.activechannel,'unifo
 % Parsing Spike Events and Times
 cts.spikeevent = cellfun(@(x)cell2mat(arrayfun(@(y)logical(bitget(y,1:16)),x,'uniformoutput',false)),...
     cts.spikeevent,'uniformoutput',false);
-cts.spiketime = cellfun(@(x)single(x)*VLabGlobal.TICK,cts.spiketime,'uniformoutput',false);
-% for i=1:height(cts)
-%
-%
-%     % Process Spike
-%     se = cts(i).m_wSpikeEvent;
-%     st = cts(i).m_dSpikeTime;
-%     condtests.spikeevent{i,1} = se;
-%     condtests.spiketime{i,1} = (st/VLabGlobal.TICK)-figontime;
-%
-% end
+    function cst = ParseSpikeTime(ac,se,st,fot)
+        st = single(st)*Analysis.IO.VLabIO.VLabGlobal.TICK;
+        if ~isempty(fot)
+            st = st - fot;
+        end
+        chn = length(ac);
+        cst = cell(1,chn);
+        for i = 1:chn
+            if ac(i) && ~isempty(st)
+                cst{1,i} = st(se(:,i));
+            end
+        end
+    end
+cts.spike = cellfun(@ParseSpikeTime,cts.activechannel,cts.spikeevent,cts.spiketime,cts.figontime,'uniformoutput',false);
 
+% Remove Redundant Data
+cts(:,{'activechannel','comment','spikeevent','spiketime','dtoa','hv0','dtoa2'}) = [];
 pblock = vlblock;
-pblock.condtests = cts;
+pblock.data.condtests = cts;
+
 pblock.param.Condition = UnfoldCond(pblock.param.Condition);
 % Parsing Block Repeat
 t1 = strfind(pblock.source,pblock.name);
@@ -110,9 +120,19 @@ if ~isempty(t1)
     t2 = strfind(pblock.source,'.');
     pblock.param.Repeat = str2double(pblock.source(t1(end)+length(pblock.name):t2(end)-1));
 end
+% Prepare Param
+pblock.param.AccumTimes = str2double(pblock.param.AccumTimes);
+pblock.param.TrialN = str2double(pblock.param.AccumedTimes);
+pblock.param = rmfield(pblock.param,'AccumedTimes');
+pblock.param.SimulateFile = pblock.param.IVFile;
+pblock.param = rmfield(pblock.param,'IVFile');
+pblock.param.ConditionFile = pblock.param.CustomItems;
+pblock.param = rmfield(pblock.param,'CustomItems');
 
+pblock.param.IsRandom = logical(str2double(pblock.param.IsRandom));
+pblock.param.IsBalanced = logical(str2double(pblock.param.IsBalanced));
 pblock.param.IsPrepared = true;
 pblock.param = orderfields(pblock.param);
-pblock.paramsim = orderfields(pblock.paramsim);
-pblock.paramsub = orderfields(pblock.paramsub);
+pblock.param.SimulateParam = orderfields(pblock.param.SimulateParam);
+pblock.param.SubjectParam = orderfields(pblock.param.SubjectParam);
 end
