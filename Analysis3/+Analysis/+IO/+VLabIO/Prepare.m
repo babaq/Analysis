@@ -1,6 +1,6 @@
 function [ pblock ] = Prepare( vlblock )
 %PREPARE Prepare VLab Block Data
-%   Detailed explanation goes here
+%   Time Units are all ms
 
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
@@ -57,13 +57,15 @@ cts.targetontime = cellfun(@(x,y)single(y(x==VLabGlobal.TARGET_ON)),cts.fpaction
         r = sqrt(x.^2+y.^2);
         ep = [x y r];
     end
-if isa(cts.m_wEyePointX,'uint16')
-    cts.m_wEyePointX = single(cts.m_wEyePointX);
-    cts.m_wEyePointY = single(cts.m_wEyePointY);
+if isa(cts.m_wEyePointX{1},'uint16')
+    cts.m_wEyePointX = cellfun(@(x)single(x),cts.m_wEyePointX,'uniformoutput',false);
+    cts.m_wEyePointY = cellfun(@(x)single(x),cts.m_wEyePointY,'uniformoutput',false);
 end
 cts.eyepoint = cellfun(@ConvertEyeCoor,cts.m_wEyePointX,cts.m_wEyePointY,num2cell(cts.hv0(:,1)),num2cell(cts.hv0(:,2)),...
     num2cell(cts.dtoa(:,1)),num2cell(cts.dtoa(:,2)),num2cell(cts.dtoa2(:,1)),num2cell(cts.dtoa2(:,2)),'uniformoutput',false);
-cts.eyepointtime = cellfun(@(x)single(x),cts.eyepointtime,'uniformoutput',false);
+if isa(cts.eyepointtime,'cell')
+    cts.eyepointtime = cellfun(@(x)single(x),cts.eyepointtime,'uniformoutput',false);
+end
 cts(:,{'m_wEyePointX','m_wEyePointY'}) = [];
 
 % Parsing TASKTRIAL Status
@@ -88,6 +90,20 @@ cts.status = categorical(cts.status,...
     'Repeat';
     'EarlyHold';
     'EarlyRelease'});
+% Parsing Key Action
+if ~isa(cts.keytime,'cell')
+    cts.keyaction = categorical(cts.keyaction,...
+        [VLabGlobal.KEY_Forward ;
+        VLabGlobal.KEY_Backward ;
+        VLabGlobal.KEY_Center ;
+        VLabGlobal.KEY_Left ;
+        VLabGlobal.KEY_Right],...
+        {'Forward';
+        'Backward';
+        'Center';
+        'Left';
+        'Right'});
+end
 % Parsing Channel Bits
 cts.activechannel = arrayfun(@(x)logical(bitget(x,1:8)),cts.activechannel,'uniformoutput',false);
 % Parsing Spike Events and Times
@@ -113,7 +129,6 @@ cts(:,{'activechannel','comment','spikeevent','spiketime','dtoa','hv0','dtoa2'})
 pblock = vlblock;
 pblock.data.condtests = cts;
 
-pblock.param.Condition = UnfoldCond(pblock.param.Condition);
 % Parsing Block Repeat
 t1 = strfind(pblock.source,pblock.name);
 if ~isempty(t1)
@@ -126,8 +141,20 @@ pblock.param.TrialN = str2double(pblock.param.AccumedTimes);
 pblock.param = rmfield(pblock.param,'AccumedTimes');
 pblock.param.SimulateFile = pblock.param.IVFile;
 pblock.param = rmfield(pblock.param,'IVFile');
+pblock.param.IsConditionFile = logical(str2double(pblock.param.UseCustomItems));
+pblock.param = rmfield(pblock.param,'UseCustomItems');
 pblock.param.ConditionFile = pblock.param.CustomItems;
 pblock.param = rmfield(pblock.param,'CustomItems');
+pblock.param.Begin = str2double(pblock.param.Begin);
+pblock.param.End = str2double(pblock.param.End);
+pblock.param.Step = str2double(pblock.param.Step);
+pblock.param.IndieVar = pblock.param.Param2Change;
+pblock.param = rmfield(pblock.param,'Param2Change');
+if (pblock.param.IsConditionFile && ~isempty(pblock.param.ConditionFile)) || ~isempty(pblock.param.IndieVar)
+    pblock.param.Condition = UnfoldCond(pblock.param.Condition);
+    [pblock.param.IVSpace,pblock.param.IndieVar,pblock.param.IVValue,pblock.param.IV2C]...
+        = IV2Cond(pblock.param.Condition,pblock.param.TestType);
+end
 
 pblock.param.IsRandom = logical(str2double(pblock.param.IsRandom));
 pblock.param.IsBalanced = logical(str2double(pblock.param.IsBalanced));

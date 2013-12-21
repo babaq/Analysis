@@ -16,10 +16,14 @@ cshapen = length(cshape);
 
 earlyts = cts.status=='Early';
 figonts = cellfun(@(x)~isempty(x),cts.figontime);
+figontsn = nnz(figonts);
 figoffts = cellfun(@(x)~isempty(x),cts.figofftime);
 efigonts = earlyts & figonts;
+efigontsn = nnz(efigonts);
 efigoffts = earlyts & figoffts;
 issamects = length(find(efigonts == efigoffts))==height(cts);
+disp([num2str(figontsn),' FIG ON Test in total of ',num2str(ctsn),' Test(',num2str(figontsn/ctsn*100),'%)']);
+disp([num2str(efigontsn),' Early Test in total of ',num2str(figontsn),' FIG Test(',num2str(efigontsn/figontsn*100),'%)']);
 t1 = cts(efigonts,{'condtestdur','figontime'});
 t1.figontime = cell2mat(t1.figontime);
 t2 = cts(efigoffts,{'condtestdur','figofftime'});
@@ -40,8 +44,6 @@ end
 
 
 econdidx = cts.condidx(efigonts);
-eshape = cond{econdidx,'Shape'};
-esidp = cond{econdidx,'SceneIDPos'};
 
 figure;
 vsidp = condn/csidpn;
@@ -55,48 +57,35 @@ set(gca,'xtick',[],'ytick',[]);
 xlabel(num2str(i));
 end
 
+eor3 = condor3(econdidx);
+eshape = condshape(econdidx);
+esidp = condsceneidpos(econdidx);
+
 figure;
 subplot(2,1,1);
-hist(categorical(eshape),cshape);
-subplot(2,1,2)
-hist(categorical(esidp),csidp);
+[n1 x]=hist(eshape(eor3==0),cshape);
+[n2 x]=hist(eshape(eor3==180),cshape);
+bar(1:cshapen,[n1; n2]',1);
+set(gca,'xticklabel',x);
+subplot(2,1,2);
+hist(esidp,csidp);
 
 
 
 
 
-
-earlyshapeimage = eshape == 'Image';
-earlyshapepatch = eshape == 'Patch';
-earlysceneidimage = esidp(earlyshapeimage);
-earlysceneidpatch = esidp(earlyshapepatch);
 % earlysceneid = cellfun(@(x)regexp(x,'^(.*)x','tokens'),earlysceneid);
 % earlysceneid = cellfun(@(x)x(:),earlysceneid);
 %earlysceneid = cellfun(@(x,y)[x y],earlysceneid,earlyshape,'uniformoutput',false);
 
 
-ec = categorical(esidp);
-ecn = length(categories(ec));
-
-eci = categorical(earlysceneidimage);
-ecn = length(categories(eci));
-
-figure;
-hist(eci);
 
 
-sceneid = cond{:,'SceneIDPos'};
-shape = cond{:,'Shape'};
+
 % sceneid = cellfun(@(x)regexp(x,'^(.*)x','tokens'),sceneid);
 % sceneid = cellfun(@(x)x(:),sceneid);
-sceneid = cellfun(@(x,y){[x y]},sceneid,shape);
-sc = categorical(sceneid);
-sc = categories(sc);
-scn = length(sc);
-
-disp([num2str(ecn),' of ',num2str(scn),' scenes caused fixation break ',num2str(ecn/scn*100),' %']);
 
 
-figure;
-hist(ec);
+
+
 end

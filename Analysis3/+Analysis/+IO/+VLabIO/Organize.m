@@ -5,7 +5,7 @@ function [ cspike,clfp,oblock ] = Organize( block,badstatus )
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
 if nargin < 2
-    badstatus = {'Early','Miss','Fail','EarlyHold'};
+    badstatus = {'Early','EarlyHold','EarlyRelease'};
 end
 
 param = block.param;
@@ -24,9 +24,9 @@ clfp = cell(tn,cn);
         gs = ~gs;
     end
 
+gsidx = GoodStatus(cts.status,badstatus);
 for c=1:cn
     cidx = cts.condidx == c;
-    gsidx = GoodStatus(cts.status,badstatus);
     cgsidx = cidx&gsidx;
     tidx = cts.trialidx(cgsidx);
     if ~isempty(tidx)
@@ -42,5 +42,6 @@ oblock = block;
 oblock.data.cspike = cspike;
 oblock.data.clfp = clfp;
 oblock.param.AnalysisParam.BadStatus = badstatus;
+oblock.param.AnalysisParam.GoodStatusIndex = gsidx;
 end
 

@@ -34,6 +34,12 @@ classdef VLabGlobal
         TASKTRIAL_REPEAT = 7;
         TASKTRIAL_EARLY_HOLD = 11;
         TASKTRIAL_EARLY_RELEASE = 12;
+        % Key States
+        KEY_Forward = 70;
+        KEY_Backward = 66;
+        KEY_Center = 67;
+        KEY_Left = 76;
+        KEY_Right = 82;
     end
     
     methods
