@@ -1,6 +1,6 @@
-function [ cspike,clfp,oblock ] = Organize( block,badstatus )
+function [ cspike,clfp ] = Organize( block,badstatus )
 %ORGANIZE Organize Prepared Data According to Experiment Design
-%   
+%
 
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
@@ -8,6 +8,7 @@ if nargin < 2
     badstatus = {'Early','EarlyHold','EarlyRelease'};
 end
 
+chn = VLabGlobal.SUPPORTCHANNEL;
 param = block.param;
 cond = param.Condition;
 cts = block.data.condtests;
@@ -15,6 +16,8 @@ tn = param.TrialN;
 cn = height(cond);
 cspike = cell(tn,cn);
 clfp = cell(tn,cn);
+figontime = cell(tn,cn);
+figofftime = cell(tn,cn);
 
     function gs = GoodStatus(status,bs)
         gs = false;
@@ -31,17 +34,27 @@ for c=1:cn
     tidx = cts.trialidx(cgsidx);
     if ~isempty(tidx)
         cs = cts.spike(cgsidx);
+        font = cts.figontime(cgsidx);
+        fofft = cts.figofftime(cgsidx);
         for i=1:length(tidx)
             t = tidx(i);
-            cspike{t,c} = cs{i};
+            figontime{t,c} = font{i};
+            figofftime{t,c} = fofft{i};
+            for j = 1:chn
+                csc = cs{i}{j};
+                if ~isempty(csc)
+                    cspike{t,c,j} = csc;
+                end
+            end
         end
     end
 end
 
-oblock = block;
-oblock.data.cspike = cspike;
-oblock.data.clfp = clfp;
-oblock.param.AnalysisParam.BadStatus = badstatus;
-oblock.param.AnalysisParam.GoodStatusIndex = gsidx;
+block.data.spike = cspike;
+block.data.lfp = clfp;
+block.data.figontime = figontime;
+block.data.figofftime = figofftime;
+block.param.AnalysisParam.BadStatus = badstatus;
+block.param.AnalysisParam.GoodStatusIndex = gsidx;
 end
 

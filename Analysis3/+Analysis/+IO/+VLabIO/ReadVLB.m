@@ -5,6 +5,8 @@ function [ nTestType,szComment,nSpikeChannel,aTestType,aExpParam,aBehavParam,...
 %READVLB Read VLab Binary Data File
 %   only support file format version 10 - 11
 
+import Analysis.IO.VLabIO.VLabGlobal
+
 [fid, message] = fopen(szFileName,'rb');
 if fid == -1
     disp(message);
@@ -12,7 +14,7 @@ if fid == -1
 end
 
 supportversion = [10 11];
-supportchannel = 8;
+supportchannel = VLabGlobal.SUPPORTCHANNEL;
 wDataFormat   = fread( fid, 1, 'uint16' );
 if wDataFormat < supportversion(1)
     disp('The format of the VLab file is older than supported, error may accur !');

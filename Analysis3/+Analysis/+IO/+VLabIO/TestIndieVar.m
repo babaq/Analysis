@@ -5,8 +5,10 @@ function [ ivspace,iv,ivv,ivvdim ] = TestIndieVar( ct )
 cn = height(ct);
 iv = categorical(ct.Properties.VariableNames);
 
-ivv = varfun(@(x)categorical(unique(x)),ct,'outputformat','cell');
-ivvdim = cellfun(@(x)length(x),ivv);
+wmid = 'MATLAB:UNIQUE:RowsFlagIgnored';
+warning('off',wmid);
+ivv = varfun(@(x)categorical(unique(x,'rows')),ct,'outputformat','cell');
+ivvdim = cellfun(@(x)size(x,1),ivv);
 ivvn = prod(ivvdim);
 if cn<ivvn
     ivspace = 'Sub';

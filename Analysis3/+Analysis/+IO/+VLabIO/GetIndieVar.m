@@ -2,6 +2,8 @@ function [ ct ] = GetIndieVar( ct,ivvdim, tt,nivs )
 %GETINDIEVAR Summary of this function goes here
 %   Detailed explanation goes here
 
+import Analysis.Base.roweq
+
 if isempty(nivs)
     % Get Non-Independent Variables according to TestType
     switch tt
@@ -45,34 +47,28 @@ if ~isempty(didi)
 end
 
     function tvg = testvargroup(tvg)
+        % Exclude Dependent Variable
         s = 1;
         while s<=width(tvg)-1
-            sv = tvg{:,s};
-            usv = unique(sv,'stable');
+            sv = categorical(tvg{:,s});
+            usv = unique(sv,'rows','stable');
             dvi=[];
             e = s+1;
             while e<=width(tvg)
-                ev = tvg{:,e};
-                uev = unique(ev,'stable');
+                ev = categorical(tvg{:,e});
+                uev = unique(ev,'rows','stable');
                 tv = [];
-                for u = 1:length(usv)
-                    t1 = usv{u}==categorical(sv);
-                    t2 = uev{u}==categorical(ev);
-                    if nnz(t1==t2)==height(tvg)
-                        tu = true;
-                    else
-                        tu = false;
-                    end
-                    tv = [tv tu];
+                for u = 1:size(usv,1)
+                    t1 = Analysis.Base.roweq(usv(u,:),sv);
+                    t2 = Analysis.Base.roweq(uev(u,:),ev);
+                    tv = [tv all(t1==t2)];
                 end
-                if nnz(tv)==length(tv)
+                if all(tv)
                     dvi = [dvi e];
                 end
                 e = e + 1;
             end
-            if ~isempty(dvi)
-                tvg(:,dvi)=[];
-            end
+            tvg(:,dvi)=[];
             s = s + 1;
         end
     end

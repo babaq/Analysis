@@ -79,7 +79,8 @@ cts.status = categorical(cts.status,...
     VLabGlobal.TASKTRIAL_FAIL ;
     VLabGlobal.TASKTRIAL_REPEAT ;
     VLabGlobal.TASKTRIAL_EARLY_HOLD;
-    VLabGlobal.TASKTRIAL_EARLY_RELEASE],...
+    VLabGlobal.TASKTRIAL_EARLY_RELEASE ;
+    VLabGlobal.TASKTRIAL_DONE],...
     {'None';
     'Early';
     'Hit';
@@ -89,7 +90,8 @@ cts.status = categorical(cts.status,...
     'Fail';
     'Repeat';
     'EarlyHold';
-    'EarlyRelease'});
+    'EarlyRelease';
+    'Done'});
 % Parsing Key Action
 if ~isa(cts.keytime,'cell')
     cts.keyaction = categorical(cts.keyaction,...
@@ -105,12 +107,13 @@ if ~isa(cts.keytime,'cell')
         'Right'});
 end
 % Parsing Channel Bits
-cts.activechannel = arrayfun(@(x)logical(bitget(x,1:8)),cts.activechannel,'uniformoutput',false);
+cts.activechannel = arrayfun(@(x)logical(bitget(x,1:VLabGlobal.SUPPORTCHANNEL)),cts.activechannel,'uniformoutput',false);
 % Parsing Spike Events and Times
 cts.spikeevent = cellfun(@(x)cell2mat(arrayfun(@(y)logical(bitget(y,1:16)),x,'uniformoutput',false)),...
     cts.spikeevent,'uniformoutput',false);
     function cst = ParseSpikeTime(ac,se,st,fot)
         st = single(st)*Analysis.IO.VLabIO.VLabGlobal.TICK;
+        % Convert time relative to FigureOnTime, if it exists
         if ~isempty(fot)
             st = st - fot;
         end
@@ -129,6 +132,11 @@ cts(:,{'activechannel','comment','spikeevent','spiketime','dtoa','hv0','dtoa2'})
 pblock = vlblock;
 pblock.data.condtests = cts;
 
+% Parsing Data Source
+[path,name,ext] = fileparts(pblock.source);
+pblock.param.DataPath = path;
+pblock.param.DataFile = name;
+pblock.param.DataExt = ext;
 % Parsing Block Repeat
 t1 = strfind(pblock.source,pblock.name);
 if ~isempty(t1)

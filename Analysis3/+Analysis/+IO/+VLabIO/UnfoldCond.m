@@ -15,10 +15,12 @@ for i=1:length(cond)
     for j=1:length(sc)
         ssc = strsplit(sc{j},dvalue,'delimitertype','regularexpression');
         f = regexp(ssc{1},'^[_.-]*(\w*)','tokens');
-        ct(i).(f{:}{:}) = ssc{2};
+        ct(i).(f{:}{:}) = ssc(2:end);
     end
 end
 
 ct = struct2table(ct);
-
+var = ct.Properties.VariableNames;
+ct = varfun(@Analysis.Base.trystr2double,ct);
+ct.Properties.VariableNames = var;
 end
