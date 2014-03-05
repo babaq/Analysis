@@ -1,7 +1,7 @@
 module Analysis
 
-using Core
-using Base
-using IO
+include("Core.jl")
+include("Base.jl")
+include("IO.jl")
 
 end # module

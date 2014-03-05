@@ -1,7 +1,3 @@
-module Core
-# Neural Data Type Definations
-
-## Base Type ##
 type Vector3{T}
 	x::T
 	y::T
@@ -12,8 +8,10 @@ type CellError <: Exception
 
 end
 
-## Neural Type ##
+typealias TimePoints{T<:Real} AbstractArray{T,1}
 
+
+##############################
 type Spike
 	channel::Uint64
 	fs::Float64
@@ -125,5 +123,3 @@ type Experiment
 	designers::Vector{String}
 	subjects::Vector{Subject}
 end
-
-end # module

@@ -1,7 +1,3 @@
-module Analysis.Core
-# Functions to Query Data from NeuroDataType
-using Base
-
 function blockinfo()
 end
 
@@ -17,4 +13,8 @@ end
 function timebyindex()
 end
 
-end # module
+
+function cutst(st::TimePoints,begintime::Real,endtime::Real)
+  st[(begintime .<= st) & (st .< endtime)]
+end
+cutst(st::TimePoints,begin_end::TimePoints) = cutst(st,begin_end[1],begin_end[end])

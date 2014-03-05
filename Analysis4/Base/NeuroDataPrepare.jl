@@ -1,9 +1,10 @@
-module Analysis.Core
-# Organize NeuroData According to Experiment Design
-using Base
-
 function prepare(block)
 
 end
 
-end # module
+function binst(st::TimePoints,bin::TimePoints)
+  bin,counts = hist(st,bin)
+  return counts
+end
+# binwidth = 0.001 second to get binary spike train
+binst(st::TimePoints,begintime::Real,endtime::Real,bw::Real=0.001) = binst(st,begintime:bw:endtime)
