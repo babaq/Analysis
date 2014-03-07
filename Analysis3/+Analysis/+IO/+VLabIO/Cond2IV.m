@@ -1,5 +1,5 @@
-function [ ivspace, iv, ivv, iv2c ] = IV2Cond( ct,tt,nivs )
-%IV2COND Summary of this function goes here
+function [ ivspace, iv, ivv, iv2c ] = Cond2IV( ct,tt,nivs )
+%COND2IV Mapping condition index to independent variable values
 %   Detailed explanation goes here
 
 import Analysis.IO.VLabIO.* Analysis.Base.*
@@ -29,10 +29,10 @@ end
 for i = 1:height(ct)
     idx = zeros(1,ivn);
     for j=1:ivn
-        idx(j) = find(roweq(categorical(ct{i,j}),ivv{j}));
+        idx(j) = find(roweq(categorical(ct{i,j}),categorical(ivv{j})));
     end
     idx = regexprep(num2str(idx),'\s*',',');
-    eval(['iv2c{',idx,'} = [iv2c{',idx,'} ',num2str(i),'];']);
+    eval(['iv2c{',idx,'} = [iv2c{',idx,'}; ',num2str(i),'];']);
 end
 
 end

@@ -1,9 +1,8 @@
-function [ v,isrv ] = rvector( v )
+function [ v ] = rvector( v )
 %RVECTOR Summary of this function goes here
 %   Detailed explanation goes here
 
-isrv = isrow(v);
-if ~isrv
+if iscolumn(v)
     v = v';
 end
 

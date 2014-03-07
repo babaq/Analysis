@@ -3,7 +3,7 @@ function [ se, sd, n ] = ste( varargin )
 %   Detailed explanation goes here
 
 vn = length(varargin);
-x = Analysis.Base.cvector(varargin{1});
+x = varargin{1};
 if vn == 1
     flag = 0;
     dim = 1;

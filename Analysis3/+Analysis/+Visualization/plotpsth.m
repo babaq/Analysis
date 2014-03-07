@@ -1,8 +1,8 @@
-function [ output_args ] = plotpsth( data,param,range,bw,trial,condition,cell,vp,istrialaverage )
+function [ processdata ] = plotpsth( data,param,range,bw,trial,condition,cell,vps,istrialaverage )
 %PLOTPSTH Summary of this function goes here
 %   Detailed explanation goes here
 
-import Analysis.* Analysis.Visualization.*
+import Analysis.* Analysis.Base.* Analysis.Visualization.*
 
 spike = data.spike;
 subparam = param.SubjectParam;
@@ -10,7 +10,7 @@ maxpreicidur = str2double(subparam.MaxPreICIDur);
 maxsuficidur = str2double(subparam.MaxSufICIDur);
 maxconddur = str2double(subparam.MaxCondDur);
 datafile = param.DataFile;
-vp = visprofile(vp);
+vp = visprofile(vps);
 if ischar(range)
     range = [-maxpreicidur maxconddur + maxsuficidur];
 end
@@ -58,9 +58,10 @@ else
     cellstring = num2str(cell);
 end
 
-data = psth(data,param,range,bw);
-pdata = data(trial,condition,cell);
+processdata = psth(data,param,range,bw);
+pdata = processdata(trial,condition,cell);
 
+%% Ploting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plotname = [datafile,'_T',trialstring,'_C',condstring,'_U',cellstring,...
     '_B',num2str(bw),'_PSTH'];
 hf = newfig(plotname);

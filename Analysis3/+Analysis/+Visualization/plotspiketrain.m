@@ -1,4 +1,4 @@
-function [ output_args ] = plotspiketrain( data,param,trial,condition,cell,vp )
+function [ output_args ] = plotspiketrain( data,param,range,trial,condition,cell,vps )
 %PLOTSPIKETRAIN Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,7 +10,10 @@ maxpreicidur = str2double(subparam.MaxPreICIDur);
 maxsuficidur = str2double(subparam.MaxSufICIDur);
 maxconddur = str2double(subparam.MaxCondDur);
 datafile = param.DataFile;
-vp = visprofile(vp);
+vp = visprofile(vps);
+if ischar(range)
+    range = [-maxpreicidur maxconddur + maxsuficidur];
+end
 
 trialn = length(trial);
 if trialn == 1
@@ -49,6 +52,7 @@ else
     cellstring = num2str(cell);
 end
 
+%% Ploting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plotname = [datafile,'_T',trialstring,'_C',condstring,'_U',cellstring];
 hf = newfig(plotname);
 al = 0.04; % Axis Left Position
@@ -68,7 +72,7 @@ for i = 1:trialn
     ylabel(['Trial ',num2str(trial(i))],'FontSize',vp.textsize);
     xlabel('Time (ms)','FontSize',vp.textsize);
     set(gca,'box','off','LineWidth',vp.axiswidth,'FontSize',vp.textsize,...
-        'TickDir','out','YLim',[0 1],'XLim',[-maxpreicidur maxconddur + maxsuficidur],...
+        'TickDir','out','YLim',[0 1],'XLim',range,...
         'Position',[al,at-i*sph,aw,sh]);
     axis off;
     if i==1 % title

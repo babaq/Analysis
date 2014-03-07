@@ -3,11 +3,11 @@ function [ ivspace,iv,ivv,ivvdim ] = TestIndieVar( ct )
 %   Detailed explanation goes here
 
 cn = height(ct);
-iv = categorical(ct.Properties.VariableNames);
+iv = ct.Properties.VariableNames;
 
 wmid = 'MATLAB:UNIQUE:RowsFlagIgnored';
 warning('off',wmid);
-ivv = varfun(@(x)categorical(unique(x,'rows')),ct,'outputformat','cell');
+ivv = varfun(@(x)unique(x,'rows','sorted'),ct,'outputformat','cell');
 ivvdim = cellfun(@(x)size(x,1),ivv);
 ivvn = prod(ivvdim);
 if cn<ivvn

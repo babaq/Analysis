@@ -161,7 +161,7 @@ pblock.param = rmfield(pblock.param,'Param2Change');
 if (pblock.param.IsConditionFile && ~isempty(pblock.param.ConditionFile)) || ~isempty(pblock.param.IndieVar)
     pblock.param.Condition = UnfoldCond(pblock.param.Condition);
     [pblock.param.IVSpace,pblock.param.IndieVar,pblock.param.IVValue,pblock.param.IV2C]...
-        = IV2Cond(pblock.param.Condition,pblock.param.TestType);
+        = Cond2IV(pblock.param.Condition,pblock.param.TestType);
 end
 
 pblock.param.IsRandom = logical(str2double(pblock.param.IsRandom));

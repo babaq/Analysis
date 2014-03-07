@@ -1,8 +1,7 @@
 function [ ct ] = GetIndieVar( ct,ivvdim, tt,nivs )
-%GETINDIEVAR Summary of this function goes here
+%GETINDIEVAR Eliminate Dependent Variables
 %   Detailed explanation goes here
 
-import Analysis.Base.roweq
 
 if isempty(nivs)
     % Get Non-Independent Variables according to TestType

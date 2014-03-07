@@ -1,9 +1,8 @@
-function [ v, iscv] = cvector( v )
+function [ v ] = cvector( v )
 %CVECTOR Summary of this function goes here
 %   Detailed explanation goes here
 
-iscv = iscolumn(v);
-if ~iscv
+if isrow(v)
     v = v';
 end
 

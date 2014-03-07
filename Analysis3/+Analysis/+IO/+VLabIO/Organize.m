@@ -1,4 +1,4 @@
-function [ cspike,clfp ] = Organize( block,badstatus )
+function [ param,cspike,clfp ] = Organize( block,badstatus )
 %ORGANIZE Organize Prepared Data According to Experiment Design
 %
 
@@ -42,9 +42,11 @@ for c=1:cn
             figofftime{t,c} = fofft{i};
             for j = 1:chn
                 csc = cs{i}{j};
-                if ~isempty(csc)
-                    cspike{t,c,j} = csc;
+                % Task trial was tested, mark no spikes as NaN
+                if isempty(csc)
+                    csc = NaN;
                 end
+                cspike{t,c,j} = csc;
             end
         end
     end
@@ -56,5 +58,6 @@ block.data.figontime = figontime;
 block.data.figofftime = figofftime;
 block.param.AnalysisParam.BadStatus = badstatus;
 block.param.AnalysisParam.GoodStatusIndex = gsidx;
+param = block.param;
 end
 
