@@ -32,7 +32,33 @@ if is1d
     plotcond1d(data,param,range,delay,cell,var1d,vps);
     return;
 end
-
+% Parsing Extra Variables
+if mod(length(varargin),2) ~= 0
+    varargin{end+1} = [];
+end
+evars = reshape(varargin,2,[])';
+plotsuffixe=[];
+evaridx = [];
+for e=1:size(evars,1)
+    evar = evars{e,1};
+    evarv = categorical(evars{e,2});
+    evidx = find(evar==categorical(param.IndieVar));
+    if isempty(evidx)
+        error(['Test do not have variable: ',evar]);
+    end
+    evv = param.IVValue{evidx};
+    evvidx = find(evarv==categorical(evv));
+    if isempty(evvidx)
+        if ~isempty(evarv)
+        error(['Variable do not have value: ',char(evarv)]);
+        else
+            evvidx = 1:length(evv);
+        end
+    end
+    evaridx{e,1} = evidx;
+    evaridx{e,2} = evvidx;
+    plotsuffixe = [plotsuffixe,'_',evar,'=',char(evarv)];
+end
 %% Preparing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 spike = data.spike;
 subparam = param.SubjectParam;
@@ -87,11 +113,12 @@ xtickidx = 1:floor(xn/min(vp.maxtickn,xn)):xn;
 ytickidx = 1:floor(yn/min(vp.maxtickn,yn)):yn;
 
 if ivn >= 2
-    [Z,Zse,ft] = fmean2(ivm,yvidx,xvidx);
+    evaridx = cell2mat(evaridx);
+    [Z,Zse,ft] = fmean2(ivm,yvidx,xvidx,evaridx);
 else
     
 end
-Z = interp2(Z,vp.interptime,'cubic');
+%Z = interp2(Z,vp.interptime,'cubic');
 mmin = min(min(Z));
 mmax = max(max(Z));
 mrange = mmax-mmin;
@@ -99,12 +126,10 @@ Z = mat2gray(Z,[mmin mmax]);
 [Z, m] = gray2ind(Z,vp.colorn);
 
 %% Ploting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotname = [datafile,'_U',cellstring,'_D',num2str(delay),plotsuffixx,plotsuffixy];
+plotname = [datafile,'_U',cellstring,'_D',num2str(delay),plotsuffixx,plotsuffixy,plotsuffixe];
 hf = newfig(plotname);
-colmap = jet(vp.colorn);
-% For showing positive y axis upward(YDir=Normal),
-% flip updown Z first, then YDir=Normal could flip back to original matrix.
-hi = image([X(1) X(end)],[Y(1) Y(end)],flipud(Z));
+colmap = gray(vp.colorn);
+hi = image([X(1) X(end)],[Y(1) Y(end)],Z);
 colormap(colmap);
 tickn = 0:0.25:1;
 tick = tickn*(vp.colorn-1);

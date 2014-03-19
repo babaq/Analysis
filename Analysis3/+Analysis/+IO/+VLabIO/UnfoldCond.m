@@ -14,7 +14,7 @@ for i=1:length(cond)
     sc = strsplit(strtrim(cond{i}),dcond,'delimitertype','regularexpression');
     for j=1:length(sc)
         ssc = strsplit(sc{j},dvalue,'delimitertype','regularexpression');
-        f = regexp(ssc{1},'^[_.-]*(\w*)','tokens');
+        f = regexp(ssc{1},'^[$_.-]*(\w*)','tokens');
         ct(i).(f{:}{:}) = ssc(2:end);
     end
 end

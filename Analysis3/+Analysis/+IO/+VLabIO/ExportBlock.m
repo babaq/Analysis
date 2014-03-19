@@ -26,7 +26,8 @@ if ~isblock
     end
 end
 
-disp('Writing Block File ...');
-save(fullfile(exportpath,[name,'.mat']),'block');
+file = fullfile(exportpath,[name,'.mat']);
+disp(['Writing Block File: ',file,' ...']);
+save(file,'block');
 end
 

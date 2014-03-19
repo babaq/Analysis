@@ -8,6 +8,7 @@ if nargin < 2
     badstatus = {'Early','EarlyHold','EarlyRelease'};
 end
 
+disp(['Organizing Block Data: ',block.source,' ...']);
 chn = VLabGlobal.SUPPORTCHANNEL;
 param = block.param;
 cond = param.Condition;

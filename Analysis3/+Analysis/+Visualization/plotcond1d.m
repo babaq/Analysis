@@ -65,12 +65,15 @@ end
 xlim = [min(X)-(max(X)-min(X))/20, max(X)+(max(X)-min(X))/20];
 xtickidx = 1:floor(xn/min(vp.maxtickn,xn)):xn;
 
-if xn==condn
+if isempty(xvar)
     [Y,Yse,ft] = fmean1(pdata,2);
-elseif xn < condn
+else
     [ivm,ivse,ftn] = cellfmean(iv2ct(pdata,iv2c));
     [Y,Yse,ft] = fmean1(ivm,xvidx);
-    
+    if xn==condn
+        Yse = ivse;
+    else
+    end
 end
 ylim = [min(0,1.1*min(Y-Yse)-0.5), 1.1*max(Y+Yse)+0.5];
 

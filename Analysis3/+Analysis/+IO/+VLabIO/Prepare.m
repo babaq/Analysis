@@ -8,7 +8,7 @@ if isa(vlblock,'char')
     vlblock = ReadVLBlock(vlblock,true);
 end
 
-disp('Preparing Block Data ...');
+disp(['Preparing Block Data: ',vlblock.source,' ...']);
 % Prepare Condition Test Data
 cts = struct2table(vlblock.data.condtests);
 cts.Properties.VariableNames{'m_wFigDelay'} = 'figdelay';
