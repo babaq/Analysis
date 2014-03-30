@@ -7,6 +7,9 @@ if nargin == 1
     dim2 = 2;
     dimidx = [];
 end
+if nargin == 3
+    dimidx = [];
+end
 
 msize = size(x);
 dn1 = msize(dim1);

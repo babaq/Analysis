@@ -37,7 +37,7 @@ aExpParam.ElectrodeNum = ucElectrodeNum;
 aExpParam.CellNum = nCellNum;
 aExpParam.SpikeShapeTimes = nSpikeShapeTimes;
 aExpParam.SpikeShapeTimestamp = dSpikeShapeTimestamp;
-aExpParam.MajorChannel = ucMajorChannel;
+aExpParam.MajorChannel = ucMajorChannel+1;
 
 aExpParam.Condition = aTestSeries;
 bdata.param = aExpParam;

@@ -1,4 +1,4 @@
-function [ pblock ] = Prepare( vlblock )
+function [ vlblock ] = Prepare( vlblock )
 %PREPARE Prepare VLab Block Data
 %   Time Units are all ms
 
@@ -13,11 +13,11 @@ disp(['Preparing Block Data: ',vlblock.source,' ...']);
 cts = struct2table(vlblock.data.condtests);
 cts.Properties.VariableNames{'m_wFigDelay'} = 'figdelay';
 cts.Properties.VariableNames{'m_dTime'} = 'condtestdur';
-cts.condtestdur = single(cts.condtestdur);
+cts.condtestdur = double(cts.condtestdur);
 cts.dtoa = [cts.m_fA_X cts.m_fA_Y];
 cts.hv0 = [cts.m_nB_X cts.m_nB_Y];
 if isa(cts.hv0,'int32')
-    cts.hv0 = single(cts.hv0);
+    cts.hv0 = double(cts.hv0);
 end
 cts(:,{'m_nB_X','m_nB_Y','m_fA_X','m_fA_Y'}) = [];
 cts.Properties.VariableNames{'m_nItem'} = 'condidx';
@@ -31,6 +31,8 @@ cts.Properties.VariableNames{'m_szComment'} = 'comment';
 cts.dtoa2 = [cts.m_fR_X cts.m_fR_Y];
 cts(:,{'m_fR_X','m_fR_Y'}) = [];
 cts.Properties.VariableNames{'m_dTimeStamp'} = 'timestamp';
+cts.timestamp = double(cts.timestamp);
+vlblock.startime = cts.timestamp(1);
 cts.Properties.VariableNames{'m_nLFPSampleRate'} = 'lfpfs';
 cts.Properties.VariableNames{'m_nLFPChannels'} = 'lfpchannels';
 cts.Properties.VariableNames{'m_nLFPGain'} = 'lfpgain';
@@ -46,9 +48,9 @@ cts.condidx = cts.condidx + 1;
 cts.trialidx = cts.trialidx + 1;
 
 % Parsing FPAction and FPTime
-cts.figontime = cellfun(@(x,y)single(y(x==VLabGlobal.FIG_ON)),cts.fpaction,cts.fptime,'uniformoutput',false);
-cts.figofftime = cellfun(@(x,y)single(y(x==VLabGlobal.FIG_OFF)),cts.fpaction,cts.fptime,'uniformoutput',false);
-cts.targetontime = cellfun(@(x,y)single(y(x==VLabGlobal.TARGET_ON)),cts.fpaction,cts.fptime,'uniformoutput',false);
+cts.figontime = cellfun(@(x,y)double(y(x==VLabGlobal.FIG_ON)),cts.fpaction,cts.fptime,'uniformoutput',false);
+cts.figofftime = cellfun(@(x,y)double(y(x==VLabGlobal.FIG_OFF)),cts.fpaction,cts.fptime,'uniformoutput',false);
+cts.targetontime = cellfun(@(x,y)double(y(x==VLabGlobal.TARGET_ON)),cts.fpaction,cts.fptime,'uniformoutput',false);
 
 % Convert Raw Eye Point to Relative Value of Fixation Point
     function ep = ConvertEyeCoor(h,v,h0,v0,dtoah,dtoav,dtoah2,dtoav2)
@@ -58,13 +60,13 @@ cts.targetontime = cellfun(@(x,y)single(y(x==VLabGlobal.TARGET_ON)),cts.fpaction
         ep = [x y r];
     end
 if isa(cts.m_wEyePointX{1},'uint16')
-    cts.m_wEyePointX = cellfun(@(x)single(x),cts.m_wEyePointX,'uniformoutput',false);
-    cts.m_wEyePointY = cellfun(@(x)single(x),cts.m_wEyePointY,'uniformoutput',false);
+    cts.m_wEyePointX = cellfun(@(x)double(x),cts.m_wEyePointX,'uniformoutput',false);
+    cts.m_wEyePointY = cellfun(@(x)double(x),cts.m_wEyePointY,'uniformoutput',false);
 end
 cts.eyepoint = cellfun(@ConvertEyeCoor,cts.m_wEyePointX,cts.m_wEyePointY,num2cell(cts.hv0(:,1)),num2cell(cts.hv0(:,2)),...
     num2cell(cts.dtoa(:,1)),num2cell(cts.dtoa(:,2)),num2cell(cts.dtoa2(:,1)),num2cell(cts.dtoa2(:,2)),'uniformoutput',false);
 if isa(cts.eyepointtime,'cell')
-    cts.eyepointtime = cellfun(@(x)single(x),cts.eyepointtime,'uniformoutput',false);
+    cts.eyepointtime = cellfun(@(x)double(x),cts.eyepointtime,'uniformoutput',false);
 end
 cts(:,{'m_wEyePointX','m_wEyePointY'}) = [];
 
@@ -108,15 +110,19 @@ if ~isa(cts.keytime,'cell')
 end
 % Parsing Channel Bits
 cts.activechannel = arrayfun(@(x)logical(bitget(x,1:VLabGlobal.SUPPORTCHANNEL)),cts.activechannel,'uniformoutput',false);
+    function aac = activechannel(ac)
+        ac = cell2mat(ac);
+        aac = ac(1,:);
+        for i = 2:size(ac,1)
+            aac = or(aac,ac(i,:));
+        end
+    end
+vlblock.param.ActiveChannel = activechannel(cts.activechannel);
 % Parsing Spike Events and Times
 cts.spikeevent = cellfun(@(x)cell2mat(arrayfun(@(y)logical(bitget(y,1:16)),x,'uniformoutput',false)),...
     cts.spikeevent,'uniformoutput',false);
-    function cst = ParseSpikeTime(ac,se,st,fot)
-        st = single(st)*Analysis.IO.VLabIO.VLabGlobal.TICK;
-        % Convert time relative to FigureOnTime, if it exists
-        if ~isempty(fot)
-            st = st - fot;
-        end
+    function cst = ParseSpikeTime(ac,se,st)
+        st = double(st)*Analysis.IO.VLabIO.VLabGlobal.TICK;
         chn = length(ac);
         cst = cell(1,chn);
         for i = 1:chn
@@ -125,49 +131,66 @@ cts.spikeevent = cellfun(@(x)cell2mat(arrayfun(@(y)logical(bitget(y,1:16)),x,'un
             end
         end
     end
-cts.spike = cellfun(@ParseSpikeTime,cts.activechannel,cts.spikeevent,cts.spiketime,cts.figontime,'uniformoutput',false);
+cts.spike = cellfun(@ParseSpikeTime,cts.activechannel,cts.spikeevent,cts.spiketime,'uniformoutput',false);
 
+% Merge condition tests timeline
+cts.timestamp = cts.timestamp - vlblock.startime;
+cts.figontime = arrayfun(@(x,y)x{1}+y,cts.figontime,cts.timestamp,'uniformoutput',false);
+cts.figofftime = arrayfun(@(x,y)x{1}+y,cts.figofftime,cts.timestamp,'uniformoutput',false);
+cts.targetontime = arrayfun(@(x,y)x{1}+y,cts.targetontime,cts.timestamp,'uniformoutput',false);
+    function cs = mergespike(spike,ts,ac)
+        cs = cell(1,Analysis.IO.VLabIO.VLabGlobal.SUPPORTCHANNEL);
+        for i=1:length(spike)
+            for j=1:Analysis.IO.VLabIO.VLabGlobal.SUPPORTCHANNEL
+                st = spike{i}{j};
+                if ac{i}(j) && ~isempty(st)
+                    cs{j} = cat(1,cs{j}, st + ts(i));
+                end
+            end
+        end
+    end
+vlblock.data.cellspike = mergespike(cts.spike,cts.timestamp,cts.activechannel);
 % Remove Redundant Data
 cts(:,{'activechannel','comment','spikeevent','spiketime','dtoa','hv0','dtoa2'}) = [];
-pblock = vlblock;
-pblock.data.condtests = cts;
+vlblock.data.condtests = cts;
+
 
 % Parsing Data Source
-[path,name,ext] = fileparts(pblock.source);
-pblock.param.DataPath = path;
-pblock.param.DataFile = name;
-pblock.param.DataExt = ext;
+[path,name,ext] = fileparts(vlblock.source);
+vlblock.param.DataPath = path;
+vlblock.param.DataFile = name;
+vlblock.param.DataExt = ext;
 % Parsing Block Repeat
-t1 = strfind(pblock.source,pblock.name);
+t1 = strfind(vlblock.source,vlblock.name);
 if ~isempty(t1)
-    t2 = strfind(pblock.source,'.');
-    pblock.param.Repeat = str2double(pblock.source(t1(end)+length(pblock.name):t2(end)-1));
+    t2 = strfind(vlblock.source,'.');
+    vlblock.param.Repeat = str2double(vlblock.source(t1(end)+length(vlblock.name):t2(end)-1));
 end
 % Prepare Param
-pblock.param.AccumTimes = str2double(pblock.param.AccumTimes);
-pblock.param.TrialN = str2double(pblock.param.AccumedTimes);
-pblock.param = rmfield(pblock.param,'AccumedTimes');
-pblock.param.SimulateFile = pblock.param.IVFile;
-pblock.param = rmfield(pblock.param,'IVFile');
-pblock.param.IsConditionFile = logical(str2double(pblock.param.UseCustomItems));
-pblock.param = rmfield(pblock.param,'UseCustomItems');
-pblock.param.ConditionFile = pblock.param.CustomItems;
-pblock.param = rmfield(pblock.param,'CustomItems');
-pblock.param.Begin = str2double(pblock.param.Begin);
-pblock.param.End = str2double(pblock.param.End);
-pblock.param.Step = str2double(pblock.param.Step);
-pblock.param.IndieVar = pblock.param.Param2Change;
-pblock.param = rmfield(pblock.param,'Param2Change');
-if (pblock.param.IsConditionFile && ~isempty(pblock.param.ConditionFile)) || ~isempty(pblock.param.IndieVar)
-    pblock.param.Condition = UnfoldCond(pblock.param.Condition);
-    [pblock.param.IVSpace,pblock.param.IndieVar,pblock.param.IVValue,pblock.param.IV2C]...
-        = Cond2IV(pblock.param.Condition,pblock.param.TestType);
+vlblock.param.AccumTimes = str2double(vlblock.param.AccumTimes);
+vlblock.param.TrialN = str2double(vlblock.param.AccumedTimes);
+vlblock.param = rmfield(vlblock.param,'AccumedTimes');
+vlblock.param.SimulateFile = vlblock.param.IVFile;
+vlblock.param = rmfield(vlblock.param,'IVFile');
+vlblock.param.IsConditionFile = logical(str2double(vlblock.param.UseCustomItems));
+vlblock.param = rmfield(vlblock.param,'UseCustomItems');
+vlblock.param.ConditionFile = vlblock.param.CustomItems;
+vlblock.param = rmfield(vlblock.param,'CustomItems');
+vlblock.param.Begin = str2double(vlblock.param.Begin);
+vlblock.param.End = str2double(vlblock.param.End);
+vlblock.param.Step = str2double(vlblock.param.Step);
+vlblock.param.IndieVar = vlblock.param.Param2Change;
+vlblock.param = rmfield(vlblock.param,'Param2Change');
+if (vlblock.param.IsConditionFile && ~isempty(vlblock.param.ConditionFile)) || ~isempty(vlblock.param.IndieVar)
+    vlblock.param.Condition = UnfoldCond(vlblock.param.Condition);
+    [vlblock.param.IVSpace,vlblock.param.IndieVar,vlblock.param.IVValue,vlblock.param.IV2C]...
+        = Cond2IV(vlblock.param.Condition,vlblock.param.TestType);
 end
 
-pblock.param.IsRandom = logical(str2double(pblock.param.IsRandom));
-pblock.param.IsBalanced = logical(str2double(pblock.param.IsBalanced));
-pblock.param.IsPrepared = true;
-pblock.param = orderfields(pblock.param);
-pblock.param.SimulateParam = orderfields(pblock.param.SimulateParam);
-pblock.param.SubjectParam = orderfields(pblock.param.SubjectParam);
+vlblock.param.IsRandom = logical(str2double(vlblock.param.IsRandom));
+vlblock.param.IsBalanced = logical(str2double(vlblock.param.IsBalanced));
+vlblock.param.IsPrepared = true;
+vlblock.param = orderfields(vlblock.param);
+vlblock.param.SimulateParam = orderfields(vlblock.param.SimulateParam);
+vlblock.param.SubjectParam = orderfields(vlblock.param.SubjectParam);
 end
