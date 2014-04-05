@@ -1,9 +1,9 @@
-function [ dots,dotrfidx ] = RFPattern1_1( d,israndom,repn )
+function [ dots,dotrfidx ] = RFPattern1_1( rf,israndom,repn )
 %RFPATTERN1_1 Summary of this function goes here
 %   Detailed explanation goes here
 
 if nargin<1
-    d = rand(1,2)-0.5;
+    rf = rand(1,2)-0.5;
     israndom = false;
     repn=2;
 elseif nargin <2
@@ -21,17 +21,17 @@ end
         end
     end
 
-r = sqrt(d(1)^2+d(2)^2)/2;
-md = -d;
+r = sqrt(rf(1)^2+rf(2)^2)/2;
+mrf = -rf;
 cdots=[0 0];
 for i=1:repn
-    cdots = [d*i;cdots;md*i];
+    cdots = [rf*i;cdots;mrf*i];
 end
 for i=1:repn
-    ldots{i,1}(:,1) = cdots(:,1) - d(2)*i + jitter(israndom,r);
-    ldots{i,1}(:,2) = cdots(:,2) + d(1)*i + jitter(israndom,r);
-    rdots{i,1}(:,1) = cdots(:,1) + d(2)*i + jitter(israndom,r);
-    rdots{i,1}(:,2) = cdots(:,2) - d(1)*i + jitter(israndom,r);
+    ldots{i,1}(:,1) = cdots(:,1) - rf(2)*i + jitter(israndom,r);
+    ldots{i,1}(:,2) = cdots(:,2) + rf(1)*i + jitter(israndom,r);
+    rdots{i,1}(:,1) = cdots(:,1) + rf(2)*i + jitter(israndom,r);
+    rdots{i,1}(:,2) = cdots(:,2) - rf(1)*i + jitter(israndom,r);
 end
 
 dots = [cdots;cell2mat(ldots);cell2mat(rdots)];

@@ -1,10 +1,10 @@
-function [ processdata ] = plotpsth( data,param,range,bw,trial,condition,cell,vps,istrialaverage )
+function [ psth ] = plotpsth( data,param,range,bw,trial,condition,cell,vps,istrialaverage )
 %PLOTPSTH Summary of this function goes here
 %   Detailed explanation goes here
 
 import Analysis.* Analysis.Base.* Analysis.Visualization.*
 
-spike = data.spike;
+vi = data.valididx;
 subparam = param.SubjectParam;
 maxpreicidur = str2double(subparam.MaxPreICIDur);
 maxsuficidur = str2double(subparam.MaxSufICIDur);
@@ -21,7 +21,7 @@ end
 trialn = length(trial);
 if trialn == 1
     if trial == 0
-        trialn = size(spike,1);
+        trialn = size(vi,1);
         trialstring = 'all';
         trial = 1:trialn;
     else
@@ -36,7 +36,7 @@ end
 condn = length(condition);
 if condn == 1
     if condition == 0
-        condn = size(spike,2);
+        condn = size(vi,2);
         condstring = 'all';
         condition = 1:condn;
     else
@@ -48,7 +48,7 @@ end
 celln = length(cell);
 if celln == 1
     if cell == 0
-        celln = size(spike,3);
+        celln = size(vi,3);
         cellstring = 'all';
         cell = 1:celln;
     else
@@ -58,8 +58,8 @@ else
     cellstring = num2str(cell);
 end
 
-processdata = psth(data,param,range,bw);
-pdata = processdata(trial,condition,cell);
+[spike,psth] = cutbin(data,param,range,bw);
+pdata = psth(trial,condition,cell);
 
 %% Ploting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plotname = [datafile,'_T',trialstring,'_C',condstring,'_U',cellstring,...

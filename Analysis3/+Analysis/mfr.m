@@ -17,7 +17,7 @@ mfrdata = [];
 spikedata = [];
 for i = 1:delayn
     r = range+delay(i);
-    [md, sd] = Analysis.psth(data,param,r,r(2)-r(1));
+    [sd, md] = Analysis.cutbin(data,param,r,r(2)-r(1));
     mfrdata = cat(4,mfrdata,md);
     spikedata = cat(4,spikedata,sd);
 end

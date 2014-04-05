@@ -24,7 +24,7 @@ end
     function [isv,fp,dots] = testfp(fp,dots,error)
         [c,r] = minboundcircle(dots(:,1),dots(:,2));
         fp = fp*r+c;
-        ed = @(x,y)sqrt(sum((y-x).^2));
+        ed = @(p1,p2)sqrt(sum((p2-p1).^2));
         isv = true;
         dots(:,1) = dots(:,1)-fp(1);
         dots(:,2) = dots(:,2)-fp(2);

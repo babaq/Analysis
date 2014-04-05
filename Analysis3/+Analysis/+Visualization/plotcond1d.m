@@ -13,11 +13,38 @@ if isempty(xvidx)
             xvidx = 1;
         end
     else
-        error(['Test do not have variable: ',xvar]);
+        error(['Test do not have independent variable: ',xvar]);
     end
 end
+% Parsing Extra Variables
+if mod(length(varargin),2) ~= 0
+    varargin{end+1} = [];
+end
+evars = reshape(varargin,2,[])';
+plotsuffixe=[];
+evaridx = [];
+for e=1:size(evars,1)
+    evar = evars{e,1};
+    evarv = categorical(evars{e,2});
+    evidx = find(evar==categorical(param.IndieVar));
+    if isempty(evidx)
+        error(['Test do not have independent variable: ',evar]);
+    end
+    evv = param.IVValue{evidx};
+    evvidx = find(evarv==categorical(evv));
+    if isempty(evvidx)
+        if ~isempty(evarv)
+            error(['Variable do not have value: ',char(evarv)]);
+        else
+            evvidx = 1:length(evv);
+        end
+    end
+    evaridx{e,1} = evidx;
+    evaridx{e,2} = evvidx;
+    plotsuffixe = [plotsuffixe,'_',evar,'=',char(evarv)];
+end
 
-spike = data.spike;
+vi = data.valididx;
 subparam = param.SubjectParam;
 minconddur = str2double(subparam.MinCondDur);
 iv2c = param.IV2C;
@@ -30,7 +57,7 @@ end
 celln = length(cell);
 if celln == 1
     if cell == 0
-        celln = size(spike,3);
+        celln = size(vi,3);
         cellstring = 'all';
         cell = 1:celln;
     else
@@ -68,9 +95,10 @@ xtickidx = 1:floor(xn/min(vp.maxtickn,xn)):xn;
 if isempty(xvar)
     [Y,Yse,ft] = fmean1(pdata,2);
 else
-    [ivm,ivse,ftn] = cellfmean(iv2ct(pdata,iv2c));
-    [Y,Yse,ft] = fmean1(ivm,xvidx);
-    if xn==condn
+    [ivm,ivse,ftn] = cellfmean1(iv2ct(pdata,iv2c),2);
+    evaridx = cell2mat(evaridx);
+    [Y,Yse,ft] = fmean1(ivm,xvidx,evaridx);
+    if ivn==1
         Yse = ivse;
     else
     end
@@ -78,7 +106,7 @@ end
 ylim = [min(0,1.1*min(Y-Yse)-0.5), 1.1*max(Y+Yse)+0.5];
 
 %% Ploting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotname = [datafile,'_U',cellstring,'_D',num2str(delay),plotsuffixx];
+plotname = [datafile,'_U',cellstring,'_D',num2str(delay),plotsuffixx,plotsuffixe];
 hf = newfig(plotname);
 he = errorbar(X,Y,Yse,'ok');
 set(he,'LineWidth',vp.errorbarwidth,'MarkerSize',vp.markersize,...

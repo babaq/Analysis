@@ -1,4 +1,4 @@
-type Vector3{T}
+type AbstratVector3{T}
 	x::T
 	y::T
 	z::T
@@ -15,7 +15,7 @@ typealias TimePoints{T<:Real} AbstractArray{T,1}
 type Spike
 	channel::Uint64
 	fs::Float64
-	value::Vector{Float64}
+	value::AbstratVector{Float64}
 	time::Float64
 	delay::Float64
 	sort
@@ -23,20 +23,20 @@ end
 
 type SpikeTrain
 	name::String
-	spikes::Vector{Spike}
+	spikes::AbstratVector{Spike}
 end
 
 type Channel
 	name::String
 	index::Uint64
-	coordinate::Vector3{Float64}
+	coordinate::AbstratVector3{Float64}
 	signal
-	spiketrains::Vector{SpikeTrain}
+	spiketrains::AbstratVector{SpikeTrain}
 end
 
-type ChannelCluster
+type ChannelGroup
 	name::String
-	channels::Vector{Channel}
+	channels::AbstratVector{Channel}
 end
 
 type AnalogSignal
@@ -44,8 +44,13 @@ type AnalogSignal
 	description
 	channel::Uint64
 	fs::Float64
-	value::Vector{Float64}
+	value::AbstratVector{Float64}
 	startime::Float64
+end
+
+type AnalogSignalArray
+  name::String
+  signals::AbstratVector{AnalogSignal}
 end
 
 type Event
@@ -54,9 +59,9 @@ type Event
 	time::Float64
 end
 
-type EventSeries
+type EventArray
 	name::String
-	events::Vector{Event}
+	events::AbstratVector{Event}
 end
 
 type Epoch
@@ -66,35 +71,45 @@ type Epoch
 	value
 end
 
-type EpochSeries
+type EpochArray
 	name::String
-	epochs::Vector{Epoch}
+	epochs::AbstratVector{Epoch}
 end
 
 type Cell
 	name::String
 	celltype
-	coordinate::Vector3{Float64}
-	spiketrain::Vector{Float64}
+	coordinate::AbstratVector3{Float64}
+	spiketrain::AbstratVector{Float64}
 end
 
 type CellAssemble
 	name::String
-	cells::Vector{Cell}
+	cells::AbstratVector{Cell}
+end
+
+type Segment
+  name::String
+	description
+	starttime
+  endtime
+  duration
+	settings::Dict
+  eventarrays::AbstratVector{EventArray}
+  epocharrays::AbstratVector{EpochArray}
+  cellassembles::AbstratVector{CellAssemble}
+  channelgroups::AbstratVector{ChannelGroup}
 end
 
 type Block
 	name::String
 	description
 	source
-	startime
-	stoptime
+	starttime
+  endtime
 	duration
 	settings::Dict
-	eventseriesgroup::Vector{EventSeries}
-	epochseriesgroup::Vector{EpochSeries}
-	cellassemblegroup::Vector{CellAssemble}
-	channelclustergroup::Vector{ChannelCluster}
+  segments::AbstratVector{Segment}
 end
 
 type RecordSession
@@ -102,8 +117,8 @@ type RecordSession
 	description
 	region
 	date
-	experimenters::Vector{String}
-	blocks::Vector{Block}
+	experimenters::AbstratVector{String}
+	blocks::AbstratVector{Block}
 end
 
 type Subject
@@ -114,12 +129,12 @@ type Subject
 	age
 	height
 	weight
-	recordsessions::Vector{RecordSession}
+	recordsessions::AbstratVector{RecordSession}
 end
 
 type Experiment
 	name::String
 	description
-	designers::Vector{String}
-	subjects::Vector{Subject}
+	designers::AbstratVector{String}
+	subjects::AbstratVector{Subject}
 end

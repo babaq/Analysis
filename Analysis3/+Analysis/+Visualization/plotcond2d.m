@@ -9,12 +9,12 @@ xvidx = find(xvar==categorical(param.IndieVar));
 yvidx = find(yvar==categorical(param.IndieVar));
 if isempty(xvidx)
     if ~isempty(xvar)
-        error(['Test do not have variable: ',xvar]);
+        error(['Test do not have independent variable: ',xvar]);
     end
 end
 if isempty(yvidx)
     if ~isempty(yvar)
-        error(['Test do not have variable: ',yvar]);
+        error(['Test do not have independent variable: ',yvar]);
     end
 end
 
@@ -29,7 +29,8 @@ else
     is1d = false;
 end
 if is1d
-    plotcond1d(data,param,range,delay,cell,var1d,vps);
+    disp('Fall back to condition 1D plot.');
+    eval(['plotcond1d(data,param,range,delay,cell,var1d,vps',varargin2literal(varargin),');']);
     return;
 end
 % Parsing Extra Variables
@@ -44,13 +45,13 @@ for e=1:size(evars,1)
     evarv = categorical(evars{e,2});
     evidx = find(evar==categorical(param.IndieVar));
     if isempty(evidx)
-        error(['Test do not have variable: ',evar]);
+        error(['Test do not have indepedent variable: ',evar]);
     end
     evv = param.IVValue{evidx};
     evvidx = find(evarv==categorical(evv));
     if isempty(evvidx)
         if ~isempty(evarv)
-        error(['Variable do not have value: ',char(evarv)]);
+            error(['Variable do not have value: ',char(evarv)]);
         else
             evvidx = 1:length(evv);
         end
@@ -60,7 +61,7 @@ for e=1:size(evars,1)
     plotsuffixe = [plotsuffixe,'_',evar,'=',char(evarv)];
 end
 %% Preparing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-spike = data.spike;
+vi = data.valididx;
 subparam = param.SubjectParam;
 minconddur = str2double(subparam.MinCondDur);
 iv2c = param.IV2C;
@@ -73,7 +74,7 @@ end
 celln = length(cell);
 if celln == 1
     if cell == 0
-        celln = size(spike,3);
+        celln = size(vi,3);
         cellstring = 'all';
         cell = 1:celln;
     else
@@ -87,7 +88,7 @@ end
 processdata = mfr(data,param,range,delay);
 pdata = processdata(:,:,cell);
 pdata = cell2matnn(pdata);
-[ivm,ivse,ftn] = cellfmean(iv2ct(pdata,iv2c));
+[ivm,ivse,ftn] = cellfmean1(iv2ct(pdata,iv2c),2);
 
 labelx = addunit(fullvarname(xvar));
 plotsuffixx = ['_',xvar];
@@ -118,7 +119,7 @@ if ivn >= 2
 else
     
 end
-%Z = interp2(Z,vp.interptime,'cubic');
+Z = interp2(Z,vp.interptime,'cubic');
 mmin = min(min(Z));
 mmax = max(max(Z));
 mrange = mmax-mmin;
@@ -128,7 +129,7 @@ Z = mat2gray(Z,[mmin mmax]);
 %% Ploting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plotname = [datafile,'_U',cellstring,'_D',num2str(delay),plotsuffixx,plotsuffixy,plotsuffixe];
 hf = newfig(plotname);
-colmap = gray(vp.colorn);
+colmap = jet(vp.colorn);
 hi = image([X(1) X(end)],[Y(1) Y(end)],Z);
 colormap(colmap);
 tickn = 0:0.25:1;

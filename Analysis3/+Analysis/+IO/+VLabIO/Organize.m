@@ -1,4 +1,4 @@
-function [ param,cspike,clfp ] = Organize( block,badstatus )
+function [ param,data ] = Organize( block,badstatus,figvalid )
 %ORGANIZE Organize Prepared Data According to Experiment Design
 %
 
@@ -6,17 +6,20 @@ import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
 if nargin < 2
     badstatus = {'Early','EarlyHold','EarlyRelease'};
+    figvalid = true;
+elseif nargin < 3
+    figvalid = true;
 end
 
 disp(['Organizing Block Data: ',block.source,' ...']);
 chn = VLabGlobal.SUPPORTCHANNEL;
 param = block.param;
+ac = param.ActiveChannel;
 cond = param.Condition;
 cts = block.data.condtests;
 tn = param.TrialN;
 cn = height(cond);
-cspike = cell(tn,cn);
-clfp = cell(tn,cn);
+valididx = false(tn,cn,chn);
 figontime = cell(tn,cn);
 figofftime = cell(tn,cn);
 
@@ -34,31 +37,30 @@ for c=1:cn
     cgsidx = cidx&gsidx;
     tidx = cts.trialidx(cgsidx);
     if ~isempty(tidx)
-        cs = cts.spike(cgsidx);
         font = cts.figontime(cgsidx);
         fofft = cts.figofftime(cgsidx);
         for i=1:length(tidx)
             t = tidx(i);
+            v = true;
+            if figvalid
+                v = v & ~isempty(font{i}) & ~isempty(fofft{i});
+            end
             figontime{t,c} = font{i};
             figofftime{t,c} = fofft{i};
             for j = 1:chn
-                csc = cs{i}{j};
-                % Task trial was tested, mark no spikes as NaN
-                if isempty(csc)
-                    csc = NaN;
-                end
-                cspike{t,c,j} = csc;
+                valididx(t,c,j) = v & ac(j);
             end
         end
     end
 end
 
-block.data.spike = cspike;
-block.data.lfp = clfp;
+block.data.valididx = valididx;
 block.data.figontime = figontime;
 block.data.figofftime = figofftime;
 block.param.AnalysisParam.BadStatus = badstatus;
 block.param.AnalysisParam.GoodStatusIndex = gsidx;
+block.param.AnalysisParam.FigValid = figvalid;
 param = block.param;
+data = block.data;
 end
 
