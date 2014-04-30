@@ -250,7 +250,7 @@ bool ReadCTrial( mxArray * pTrial, int index, FILE * fp )
 	dims[1] = 1;
 	
 	fread( &wDataFormat, 2, 1, fp );
-	if(wDataFormat > 10) {
+	if(wDataFormat > 11) {
 	    printf("Unknow Trial format!\n");
 	    return false;
 	}
@@ -266,17 +266,17 @@ bool ReadCTrial( mxArray * pTrial, int index, FILE * fp )
 	fread( mxGetData(array), 4, 1, fp );
 	mxSetField( pTrial, index, "m_fA_X", array );
 
-	array = mxCreateNumericArray( 2, dims, mxINT32_CLASS, mxREAL );
+	array = mxCreateNumericArray( 2, dims, wDataFormat < 11? mxINT32_CLASS : mxSINGLE_CLASS, mxREAL );
 	fread( mxGetData(array), 4, 1, fp );
-	mxSetField( pTrial, index, "m_nB_X", array );
+	mxSetField( pTrial, index, "m_fB_X", array );
 
 	array = mxCreateNumericArray( 2, dims, mxSINGLE_CLASS, mxREAL );
 	fread( mxGetData(array), 4, 1, fp );
 	mxSetField( pTrial, index, "m_fA_Y", array );
 
-	array = mxCreateNumericArray( 2, dims, mxINT32_CLASS, mxREAL );
+	array = mxCreateNumericArray( 2, dims, wDataFormat < 11? mxINT32_CLASS : mxSINGLE_CLASS, mxREAL );
 	fread( mxGetData(array), 4, 1, fp );
-	mxSetField( pTrial, index, "m_nB_Y", array );
+	mxSetField( pTrial, index, "m_fB_Y", array );
 
 	array = mxCreateNumericArray( 2, dims, mxINT32_CLASS, mxREAL );
 	fread( mxGetData(array), 4, 1, fp );
@@ -427,10 +427,10 @@ mxArray * ReadCTypedPtrArray( FILE * fp )
 		"m_wFigDelay",
 		"m_dTime",
 		"m_fA_X",
-		"m_nB_X",
+		"m_fB_X",
 		"m_fR_X",
 		"m_fA_Y",
-		"m_nB_Y",
+		"m_fB_Y",
 		"m_fR_Y",
 		"m_nItem",
 		"m_nSet",

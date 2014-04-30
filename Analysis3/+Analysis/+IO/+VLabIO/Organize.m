@@ -62,5 +62,6 @@ block.param.AnalysisParam.GoodStatusIndex = gsidx;
 block.param.AnalysisParam.FigValid = figvalid;
 param = block.param;
 data = block.data;
+disp('Done.');
 end
 

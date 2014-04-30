@@ -22,7 +22,7 @@ function varargout = VLab(varargin)
 
 % Edit the above text to modify the response to help VLab
 
-% Last Modified by GUIDE v2.5 30-Mar-2014 15:58:36
+% Last Modified by GUIDE v2.5 29-Apr-2014 18:43:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -92,6 +92,7 @@ pref.isorganize = get(handles.isorg,'Value');
 pref.datafile = get(handles.data,'String');
 pref.isfigvalid = get(handles.isfv,'Value');
 pref.badstatus = get(handles.bs,'String');
+pref.nivs = get(handles.nivs,'String');
 
 % --- Set all preference values to UI.
 function setpref(pref,handles)
@@ -103,6 +104,7 @@ set(handles.isorg,'Value',pref.isorganize);
 set(handles.data,'String',pref.datafile);
 set(handles.isfv,'Value',pref.isfigvalid);
 set(handles.bs,'String',pref.badstatus);
+set(handles.nivs,'String',pref.nivs);
 
 
 function showdatafile(handles)
@@ -212,7 +214,10 @@ contents = get(handles.data,'String');
 dfile = contents{get(handles.data,'Value')};
 block = Analysis.IO.VLabIO.ReadVLBlock(fullfile(get(handles.dpath,'String'),dfile));
 if get(handles.ispre,'Value')
-    block = Analysis.IO.VLabIO.Prepare(block);
+    dl = '\s*,\s*';
+    nivs = get(handles.nivs,'String');
+    nivs = strsplit(strtrim(nivs),dl,'delimitertype','regularexpression');
+    block = Analysis.IO.VLabIO.Prepare(block,'nivs',nivs);
 end
 if get(handles.isorg,'Value')
     dl = '\s*,\s*';
@@ -227,7 +232,13 @@ function ispre_Callback(hObject, eventdata, handles)
 % hObject    handle to ispre (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if get(handles.ispre,'Value')
+    set(handles.nivst,'Visible','on');
+    set(handles.nivs,'Visible','on');
+else
+    set(handles.nivst,'Visible','off');
+    set(handles.nivs,'Visible','off');
+end
 % Hint: get(hObject,'Value') returns toggle state of ispre
 
 
@@ -315,6 +326,29 @@ function bs_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function bs_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to bs (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function nivs_Callback(hObject, eventdata, handles)
+% hObject    handle to nivs (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of nivs as text
+%        str2double(get(hObject,'String')) returns contents of nivs as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function nivs_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to nivs (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

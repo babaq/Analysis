@@ -8,6 +8,8 @@ if isempty(nivs)
     switch tt
         case 'BO_Natim_Hybrid'
             nivs = {'FILENAME','IMPOSX','IMPOSY'};
+        case 'Foraging_10'
+            nivs = {'FIXFIGIDX','RFFIGIDX'};
         otherwise
             nivs = {''};
     end

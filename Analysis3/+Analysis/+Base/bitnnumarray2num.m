@@ -12,6 +12,9 @@ end
 
 numarray = array;
 m = length(array);
+if n*m>64
+    error('Encoding bits exceed maximum bits of a number(64).');
+end
 for i=1:m
     switch endianness
         case 'little'
@@ -21,12 +24,12 @@ for i=1:m
             t = m-i;
             idx = i;
         otherwise
-            error('need correct endianness: little/big');
+            error('need correct endianness: little/big.');
     end
     numarray(idx) = 2^(t*n)*array(i);
 end
 
 num = sum(numarray);
 
-disp([endianness,'-endian encoding done in ',num2str(m*n),' bits']);
+disp([endianness,'-endian encoding done in ',num2str(m*n),' bits.']);
 end

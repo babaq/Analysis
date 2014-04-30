@@ -2,10 +2,14 @@ function [ array ] = num2bitnnumarray( n,num,m,endianness )
 %NUM2BITNNUMARRAY Summary of this function goes here
 %   Detailed explanation goes here
 
-if nargin < 3
+if nargin < 4
     endianness = 'big';
 end
-maxbits = 64;
+if m*n<=32
+    maxbits = 32;
+else
+    maxbits = 64;
+end
 
 bits = bitget(num,maxbits:-1:1);
 bits = bits(end-m*n+1:end);

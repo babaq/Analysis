@@ -3,7 +3,7 @@ function [ mfrdata, spikedata ] = mfr( data,param,range,delay )
 %   Detailed explanation goes here
 
 subparam = param.SubjectParam;
-minconddur = str2double(subparam.MinCondDur);
+minconddur = subparam.MinCondDur;
 
 if nargin < 3
     range = [0 minconddur];

@@ -6,9 +6,9 @@ import Analysis.* Analysis.Base.* Analysis.Visualization.*
 
 vi = data.valididx;
 subparam = param.SubjectParam;
-maxpreicidur = str2double(subparam.MaxPreICIDur);
-maxsuficidur = str2double(subparam.MaxSufICIDur);
-maxconddur = str2double(subparam.MaxCondDur);
+maxpreicidur = subparam.MaxPreICIDur;
+maxsuficidur = subparam.MaxSufICIDur;
+maxconddur = subparam.MaxCondDur;
 datafile = param.DataFile;
 vp = visprofile(vps);
 if ischar(range)

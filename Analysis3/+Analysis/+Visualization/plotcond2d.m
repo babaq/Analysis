@@ -63,7 +63,7 @@ end
 %% Preparing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 vi = data.valididx;
 subparam = param.SubjectParam;
-minconddur = str2double(subparam.MinCondDur);
+minconddur = subparam.MinCondDur;
 iv2c = param.IV2C;
 datafile = param.DataFile;
 vp = visprofile(vps);

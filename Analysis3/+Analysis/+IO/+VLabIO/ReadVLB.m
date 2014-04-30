@@ -157,9 +157,9 @@ end
         trial.m_wFigDelay                = fread( fid, 1, 'uint16' );
         trial.m_dTime                    = fread( fid, 1, 'uint32' );
         trial.m_fA_X                     = fread( fid, 1, 'float32' );
-        trial.m_nB_X                     = fread( fid, 1, 'int32' );
+        trial.m_fB_X                     = fread( fid, 1, 'float32' );
         trial.m_fA_Y                     = fread( fid, 1, 'float32' );
-        trial.m_nB_Y                     = fread( fid, 1, 'int32' );
+        trial.m_fB_Y                     = fread( fid, 1, 'float32' );
         
         trial.m_nItem                    = fread( fid, 1, 'int32' );
         trial.m_nSet                     = fread( fid, 1, 'int32' );

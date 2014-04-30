@@ -8,9 +8,9 @@ vi = data.valididx;
 subparam = param.SubjectParam;
 figontime = data.figontime;
 figvalid = param.AnalysisParam.FigValid;
-maxpreicidur = str2double(subparam.MaxPreICIDur);
-maxsuficidur = str2double(subparam.MaxSufICIDur);
-maxconddur = str2double(subparam.MaxCondDur);
+maxpreicidur = subparam.MaxPreICIDur;
+maxsuficidur = subparam.MaxSufICIDur;
+maxconddur = subparam.MaxCondDur;
 
 if nargin < 3
     range = [-maxpreicidur maxconddur + maxsuficidur];
@@ -37,6 +37,7 @@ for i = 1:trialn
                     r = range + figontime{i,j}(1);
                 end
                 sp = cutst(data.cellspike{k},r(1),r(2));
+                sp = sp{1};
                 if isbin
                     psthdata{i,j,k} = binst(rvector(sp),r,bw)/(bw/1000);
                 end

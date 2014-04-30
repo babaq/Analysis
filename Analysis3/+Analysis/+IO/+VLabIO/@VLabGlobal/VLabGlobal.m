@@ -1,5 +1,5 @@
 classdef VLabGlobal
-    %VLABGLOBAL 
+    %VLABGLOBAL
     %   Only Single Unit should be recorded and each well sorted SU should be
     %   recorded in different channel.
     

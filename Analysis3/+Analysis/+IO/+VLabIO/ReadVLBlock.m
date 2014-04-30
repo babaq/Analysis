@@ -47,6 +47,6 @@ bdata.param.SubjectParam = aBehavParam;
 bdata.param.AnalysisParam.IsFastRead = fastversion;
 
 bdata.data.condtests = aTrial;
-
+disp('Done.');
 end
 
