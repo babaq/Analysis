@@ -14,7 +14,10 @@ function timebyindex()
 end
 
 
-function cutst(st::TimePoints,begintime::Real,endtime::Real)
-  st[(begintime .<= st) & (st .< endtime)]
+function cutt(t::TimePoints,begintime::Real,endtime::Real)
+  t[(begintime .<= t) & (t .< endtime)]
 end
-cutst(st::TimePoints,begin_end::TimePoints) = cutst(st,begin_end[1],begin_end[end])
+function cutt(t::TimePoints,begintime::TimePoints,endtime::TimePoints)
+  btn = length(begintime)
+
+end
