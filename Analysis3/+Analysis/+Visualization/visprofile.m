@@ -2,6 +2,10 @@ function [ vp ] = visprofile( vps )
 %VISPROFILE Summary of this function goes here
 %   Detailed explanation goes here
 
+if nargin < 1
+    vps = '';
+end
+
 % Default Profile
 vp.linewidth = 1;
 vp.errorbarwidth = 0.5;

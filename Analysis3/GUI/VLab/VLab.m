@@ -22,7 +22,7 @@ function varargout = VLab(varargin)
 
 % Edit the above text to modify the response to help VLab
 
-% Last Modified by GUIDE v2.5 29-Apr-2014 18:43:26
+% Last Modified by GUIDE v2.5 02-May-2014 13:07:59
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -93,6 +93,7 @@ pref.datafile = get(handles.data,'String');
 pref.isfigvalid = get(handles.isfv,'Value');
 pref.badstatus = get(handles.bs,'String');
 pref.nivs = get(handles.nivs,'String');
+pref.iscoredata = get(handles.iscoredata,'Value');
 
 % --- Set all preference values to UI.
 function setpref(pref,handles)
@@ -105,6 +106,7 @@ set(handles.data,'String',pref.datafile);
 set(handles.isfv,'Value',pref.isfigvalid);
 set(handles.bs,'String',pref.badstatus);
 set(handles.nivs,'String',pref.nivs);
+set(handles.iscoredata,'Value',pref.iscoredata);
 
 
 function showdatafile(handles)
@@ -266,7 +268,8 @@ function exportdata_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global block
 if ~isempty(block)
-    Analysis.IO.VLabIO.ExportBlock( block,get(handles.epath,'String'),false );
+    Analysis.IO.VLabIO.ExportBlock( block,get(handles.epath,'String'),...
+        false,get(handles.iscoredata,'Value') );
 else
     warning('No Data to Export, Read First.');
     warndlg('No Data to Export, Read First.');
@@ -357,3 +360,12 @@ function nivs_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in iscoredata.
+function iscoredata_Callback(hObject, eventdata, handles)
+% hObject    handle to iscoredata (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of iscoredata

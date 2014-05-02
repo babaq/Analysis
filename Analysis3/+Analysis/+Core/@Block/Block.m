@@ -35,8 +35,12 @@ classdef Block < handle
                 blk.source = s;
             end
         end
+        function dataset = CoreData(block)
+            dataset.param = Analysis.Base.trytable2struct(block.param);
+            dataset.data = Analysis.Base.trytable2struct(block.data);
+        end
         function save(block,filefullname)
-            save(filefullname,'block');
+            save(filefullname,'block',Analysis.Core.Global.MatVersion);
         end
     end
     

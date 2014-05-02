@@ -9,6 +9,6 @@ block.param = ParseES(block.eventseriesgroup,options.esformat);
 block.cellassemblegroup = ParseCAGccg(block.channelclustergroup);
 
 filename = [block.source.tank,'__',block.name,'.mat'];
-save(fullfile(exportpath,filename),'block');
+save(fullfile(exportpath,filename),'block',Analysis.Core.Global.MatVersion);
 end
 

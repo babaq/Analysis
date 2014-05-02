@@ -207,6 +207,7 @@ vlblock.param.End = str2double(vlblock.param.End);
 vlblock.param.Step = str2double(vlblock.param.Step);
 vlblock.param.IndieVar = vlblock.param.Param2Change;
 vlblock.param = rmfield(vlblock.param,'Param2Change');
+vlblock.param.StartTime = vlblock.startime;
 if (vlblock.param.IsConditionFile && ~isempty(vlblock.param.ConditionFile)) || ~isempty(vlblock.param.IndieVar)
     vlblock.param.Condition = UnfoldCond(vlblock.param.Condition);
     UnfoldSubCond(vlblock);
