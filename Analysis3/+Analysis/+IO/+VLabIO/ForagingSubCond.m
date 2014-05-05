@@ -70,7 +70,7 @@ for i=1:height(cts)
     end
     if length(ffontime)>length(ffofftime)
         if (cts.figofftime{i}(end)-ffontime(end)) >= figfixdur
-            ffofftime(end+1) = ffontime(end)+figfixdur;
+            ffofftime(end+1,1) = ffontime(end)+figfixdur;
         else
             ffontime = ffontime(1:end-1);
         end
@@ -80,7 +80,7 @@ for i=1:height(cts)
     end
     % Get Valid and Invalid FigFix
     ffn = length(ffontime);
-    vffidx = (ffofftime-ffontime)>=figfixdur;
+    vffidx = (ffofftime-ffontime) >= figfixdur;
     ivffidx = find(~vffidx);
     vffidx = find(vffidx);
     vffontime = ffontime(vffidx);
