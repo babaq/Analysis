@@ -6,6 +6,8 @@ function [ ct ] = GetIndieVar( ct,ivvdim, tt,nivs )
 if isempty(nivs)
     % Get Non-Independent Variables according to TestType
     switch tt
+        case 'BO'
+            nivs = {'NUMFIGS','AUTOOVERLAP','RIDGE','RIDGE10'};
         case 'BO_Natim_Hybrid'
             nivs = {'FILENAME','IMPOSX','IMPOSY'};
         case 'Foraging_10'

@@ -182,6 +182,7 @@ vlblock.data.condtests = cts;
 vlblock.param.DataPath = path;
 vlblock.param.DataFile = name;
 vlblock.param.DataExt = ext;
+vlblock.param.CellID = name(1:6);
 % Parsing Block Repeat
 t1 = strfind(vlblock.source,vlblock.name);
 if ~isempty(t1)

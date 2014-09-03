@@ -1,7 +1,11 @@
-function [ dots,dotrfidx ] = RFPattern1_3( rf,or,origin,dotfigtype )
+function [ dots,dotrfidx ] = RFPattern1_3( rf,or,origin,dotfigtype,spacefactor )
 %RFPATTERN1_3 Summary of this function goes here
 %   Detailed explanation goes here
 
+
+if nargin < 5
+   spacefactor = 1.1; 
+end
 
 corigin = [];
 for i=1:3
@@ -28,7 +32,7 @@ newrfs = [cdots(2:end,:)-cdots(1:end-1,:);...
     ldots(2:end,:)-ldots(1:end-1,:);...
     rdots(2:end,:)-rdots(1:end-1,:)];
 [c,i] = max(sqrt(diag(newrfs*newrfs')));
-nrf = newrfs(i,:);
+nrf = spacefactor * newrfs(i,:);
 
 
 ldots(:,1) = ldots(:,1) - nrf(2);

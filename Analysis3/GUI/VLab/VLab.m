@@ -22,7 +22,7 @@ function varargout = VLab(varargin)
 
 % Edit the above text to modify the response to help VLab
 
-% Last Modified by GUIDE v2.5 02-May-2014 13:07:59
+% Last Modified by GUIDE v2.5 21-Jun-2014 18:54:35
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -119,7 +119,13 @@ d = varfun(@Analysis.Base.trystr2double,d);
 d.Properties.VariableNames = var;
 d = sortrows(d,'datenum','descend');
 
-set(handles.data,'String',d.name);
+if isempty(d)
+    name = 'No Match Files';
+else
+    name = d.name;
+end
+set(handles.data,'String',name);
+set(handles.data,'Value',1);
 
 
 
@@ -213,7 +219,12 @@ function readdata_Callback(hObject, eventdata, handles)
 
 global block param data;
 contents = get(handles.data,'String');
-dfile = contents{get(handles.data,'Value')};
+if isempty(eventdata)
+    fidx = get(handles.data,'Value');
+else
+    fidx = eventdata.filelistindex;
+end
+dfile = contents{fidx};
 block = Analysis.IO.VLabIO.ReadVLBlock(fullfile(get(handles.dpath,'String'),dfile));
 if get(handles.ispre,'Value')
     dl = '\s*,\s*';
@@ -269,7 +280,7 @@ function exportdata_Callback(hObject, eventdata, handles)
 global block
 if ~isempty(block)
     Analysis.IO.VLabIO.ExportBlock( block,get(handles.epath,'String'),...
-        false,get(handles.iscoredata,'Value') );
+        'isprepare',false,'iscoredata',get(handles.iscoredata,'Value') );
 else
     warning('No Data to Export, Read First.');
     warndlg('No Data to Export, Read First.');
@@ -369,3 +380,24 @@ function iscoredata_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of iscoredata
+
+
+% --------------------------------------------------------------------
+function dt_Callback(hObject, eventdata, handles)
+% hObject    handle to dt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function edlt_Callback(hObject, eventdata, handles)
+% hObject    handle to edlt (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+contents = get(handles.data,'String');
+ed.filelistindex = 0;
+for i=1:length(contents)
+    ed.filelistindex = i;
+    readdata_Callback(hObject, ed, handles);
+    exportdata_Callback(hObject, eventdata, handles);
+end

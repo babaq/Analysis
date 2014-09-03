@@ -22,41 +22,36 @@ cn = height(cond);
 valididx = false(tn,cn,chn);
 figontime = cell(tn,cn);
 figofftime = cell(tn,cn);
-
-    function gs = GoodStatus(status,bs)
-        gs = false;
-        for bsi = 1: length(bs)
-            gs = gs | status == bs{bsi};
-        end
-        gs = ~gs;
-    end
+ctsseq = cell(tn,cn);
 
 gsidx = GoodStatus(cts.status,badstatus);
 for c=1:cn
     cidx = cts.condidx == c;
-    cgsidx = cidx&gsidx;
-    tidx = cts.trialidx(cgsidx);
-    if ~isempty(tidx)
-        font = cts.figontime(cgsidx);
-        fofft = cts.figofftime(cgsidx);
-        for i=1:length(tidx)
-            t = tidx(i);
-            v = true;
-            if figvalid
-                v = v & ~isempty(font{i}) & ~isempty(fofft{i});
-            end
-            figontime{t,c} = font{i};
-            figofftime{t,c} = fofft{i};
-            for j = 1:chn
-                valididx(t,c,j) = v & ac(j);
-            end
+    ci = find(cidx);
+    font = cts.figontime(ci);
+    fofft = cts.figofftime(ci);
+    ti = cts.trialidx(cidx);
+    for i=1:length(ti)
+        t = ti(i);
+        v = true;
+        ctsseq{t,c} = ci(i);
+        figontime{t,c} = font{i};
+        figofftime{t,c} = fofft{i};
+        v = v & gsidx(ci(i));
+        if figvalid
+            v = v & ~isempty(font{i}) & ~isempty(fofft{i});
+        end
+        for j = 1:chn
+            valididx(t,c,j) = v & ac(j);
         end
     end
 end
 
+
 block.data.valididx = valididx;
 block.data.figontime = figontime;
 block.data.figofftime = figofftime;
+block.data.ctsseq = ctsseq;
 block.param.AnalysisParam.BadStatus = badstatus;
 block.param.AnalysisParam.GoodStatusIndex = gsidx;
 block.param.AnalysisParam.FigValid = figvalid;

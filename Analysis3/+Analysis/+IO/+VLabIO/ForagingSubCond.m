@@ -43,7 +43,7 @@ iv = {'FIXFIGIDX','FIXFIGTYPE','RFFIGIDX','RFFIGTYPE','REWARDTYPE','ORFLIP','REV
 ivv = {(1:dn)',[0;1],(0:dn)',[-1;0;1],[0;1],[0;1],[0;1]};
 newcond = orthocond(iv,ivv);
 
-% Get SubCondition and Condtest Makers
+% Get SubCondition and Condtest Markers
 block.data.condtests0 = block.data.condtests;
 if subparam.MinFigFixDur ~= subparam.MaxFigFixDur
     error('Random FigFixDur Can Not Be Recovered!');
