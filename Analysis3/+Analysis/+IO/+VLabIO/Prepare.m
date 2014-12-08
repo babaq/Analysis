@@ -4,10 +4,8 @@ function [ vlblock ] = Prepare( vlblock,varargin )
 
 p = inputParser;
 addRequired(p,'vlblock');
-addParameter(p,'nivs','');
 parse(p,vlblock,varargin{:});
 vlblock = p.Results.vlblock;
-nivs = p.Results.nivs;
 
 
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
@@ -24,12 +22,12 @@ cts.Properties.VariableNames{'m_dTime'} = 'condtestdur';
 cts.condtestdur = double(cts.condtestdur);
 cts.dtoa = [cts.m_fA_X cts.m_fA_Y];
 cts.hv0 = [cts.m_fB_X cts.m_fB_Y];
-if ~isa(cts.hv0,'double')
-    cts.hv0 = double(cts.hv0);
-end
+cts.hv0 = double(cts.hv0);
 cts(:,{'m_fB_X','m_fB_Y','m_fA_X','m_fA_Y'}) = [];
 cts.Properties.VariableNames{'m_nItem'} = 'condidx';
-cts.Properties.VariableNames{'m_nSet'} = 'trialidx';
+cts.condidx = cts.condidx + 1;
+cts.Properties.VariableNames{'m_nSet'} = 'condrepeat';
+cts.condrepeat = cts.condrepeat + 1;
 cts.Properties.VariableNames{'m_nStatus'} = 'status';
 cts.Properties.VariableNames{'m_nResponseTime'} = 'responsetime';
 cts.v = [cts.m_nV1 cts.m_nV2 cts.m_nV3];
@@ -52,8 +50,6 @@ cts.Properties.VariableNames{'m_nKeyAction'} = 'keyaction';
 cts.Properties.VariableNames{'m_dFPTime'} = 'fptime';
 cts.Properties.VariableNames{'m_bFPAction'} = 'fpaction';
 cts.Properties.VariableNames{'m_nLFPSample'} = 'lfpsample';
-cts.condidx = cts.condidx + 1;
-cts.trialidx = cts.trialidx + 1;
 
 % Parsing FPAction and FPTime
 cts.figontime = cellfun(@(x,y)double(y(x==VLabGlobal.FIG_ON)),cts.fpaction,cts.fptime,'uniformoutput',false);
@@ -170,6 +166,14 @@ cts.testofftime = arrayfun(@(x,y)x{1}+y,cts.testofftime,cts.timestamp,'uniformou
     end
 vlblock.data.cellspike = mergespike(cts.spike,cts.timestamp,cts.activechannel);
 vlblock.data.eyepoint = cell2mat(cellfun(@(x,y)[x y],cts.eyepointtime,cts.eyepoint,'uniformoutput',false));
+vlblock.param.EyeFs = 0;
+for ci = 1:height(cts)
+    ept = cts.eyepointtime{ci};
+    if length(ept) > 10
+        vlblock.param.EyeFs = 1/(mean(diff(ept))*0.001);
+        break;
+    end
+end
 % Remove Redundant Data
 cts(:,{'activechannel','comment','spikeevent','spiketime','dtoa','hv0','dtoa2','eyepointtime','eyepoint','spike'}) = [];
 % Remove Unused Data
@@ -187,15 +191,16 @@ vlblock.param.CellID = name(1:6);
 t1 = strfind(vlblock.source,vlblock.name);
 if ~isempty(t1)
     t2 = strfind(vlblock.source,'.');
-    vlblock.param.Repeat = str2double(vlblock.source(t1(end)+length(vlblock.name):t2(end)-1));
+    vlblock.param.TestRepeat = str2double(vlblock.source(t1(end)+length(vlblock.name):t2(end)-1));
 end
 % Prepare Param
 vlblock.param.IsRandom = logical(str2double(vlblock.param.IsRandom));
 vlblock.param.IsBalanced = logical(str2double(vlblock.param.IsBalanced));
 vlblock.param.SimulateParam = orderfields(trystr2num(vlblock.param.SimulateParam));
 vlblock.param.SubjectParam = orderfields(trystr2double(vlblock.param.SubjectParam));
-vlblock.param.AccumTimes = str2double(vlblock.param.AccumTimes);
-vlblock.param.TrialN = str2double(vlblock.param.AccumedTimes);
+vlblock.param.CondRepeat = str2double(vlblock.param.AccumTimes);
+vlblock.param.MaxCondRepeated = str2double(vlblock.param.AccumedTimes);
+vlblock.param = rmfield(vlblock.param,'AccumTimes');
 vlblock.param = rmfield(vlblock.param,'AccumedTimes');
 vlblock.param.SimulateFile = vlblock.param.IVFile;
 vlblock.param = rmfield(vlblock.param,'IVFile');
@@ -212,8 +217,6 @@ vlblock.param.StartTime = vlblock.startime;
 if (vlblock.param.IsConditionFile && ~isempty(vlblock.param.ConditionFile)) || ~isempty(vlblock.param.IndieVar)
     vlblock.param.Condition = UnfoldCond(vlblock.param.Condition);
     UnfoldSubCond(vlblock);
-    [vlblock.param.IVSpace,vlblock.param.IndieVar,vlblock.param.IVValue,vlblock.param.IV2C]...
-        = Cond2IV(vlblock.param.Condition,vlblock.param.TestType,nivs);
 else
     vlblock.param.Condition = table;
 end

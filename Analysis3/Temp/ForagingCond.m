@@ -6,7 +6,7 @@ function [ fp,dots,dotrfidx,dotfigtype ] = ForagingCond( rfpos,or,isdprand,dprep
 import Analysis.Base.*
 
 pushscale = 0;
-fpor = 0.5;
+fpor = 0.2;
 figtypen = length(dotfigtypep);
 rewardfigtypen = 1;
 % [ dots,dotrfidx ] = RFPattern1_1( rfpos,isdprand,dprepn );

@@ -51,7 +51,11 @@ subparam = param.SubjectParam;
 minfigfixdur = subparam.MinFigFixDur;
 iv2c = param.IV2C;
 if ischar(range)
-    range = [0 minfigfixdur];
+    if range=='m'
+        range = [0 minfigfixdur];
+    else
+        range = [0 minfigfixdur];
+    end
 end
 
 processdata = mfr(data,param,range,delay);

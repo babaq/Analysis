@@ -14,22 +14,13 @@ p = inputParser;
 addRequired(p,'vlblock');
 addRequired(p,'exportpath');
 addParameter(p,'isprepare',true);
-addParameter(p,'nivs','');
-addParameter(p,'isorganize',true);
-addParameter(p,'isfigononly',true);
-addParameter(p,'badstatus',{'Early'});
-addParameter(p,'iscoredata',true);
-
+addParameter(p,'ismlb',true);
 
 parse(p,vlblock,exportpath,varargin{:});
 vlblock = p.Results.vlblock;
 exportpath = p.Results.exportpath;
 isprepare = p.Results.isprepare;
-nivs = p.Results.nivs;
-isorganize = p.Results.isorganize;
-isfigononly = p.Results.isfigononly;
-badstatus = p.Results.badstatus;
-iscoredata = p.Results.iscoredata;
+ismlb = p.Results.ismlb;
 
 
 if isa(vlblock,'Analysis.Core.Block')
@@ -44,21 +35,17 @@ end
 
 if ~isblock
     if isprepare
-        block = Analysis.IO.VLabIO.Prepare(vlbfile,'nivs',nivs);
-        if isorganize
-            Analysis.IO.VLabIO.Organize(block,badstatus,isfigononly);
-        end
+        block = Analysis.IO.VLabIO.Prepare(vlbfile);
     else
         block = Analysis.IO.VLabIO.ReadVLBlock(vlbfile);
     end
 end
 
 file = fullfile(exportpath,name);
-disp(['Writing Block File: ',file,' ...']);
-save([file,'.mat'],'block',Analysis.Core.Global.MatVersion);
-if iscoredata
-    dataset = block.CoreData();
-    save([file,'_CoreData.mat'],'dataset',Analysis.Core.Global.MatVersion);
+disp(['Writing Data File: ',file,' ...']);
+block.savedataset([file,'.mat']);
+if ismlb
+    block.saveblock([file,'_MLB.mat']);
 end
 disp('Done.');
 result = true;
