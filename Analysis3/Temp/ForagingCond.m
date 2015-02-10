@@ -1,4 +1,4 @@
-function [ fp,dots,dotrfidx,dotfigtype ] = ForagingCond( rfpos,or,isdprand,dprepn,...
+function [ fp,dots,dotrfidx,dotfigtype ] = ForagingCond( rfpos,or,isdprand,isalternaterevcol,dprepn,...
     dotfigtypep,origin,rewardfigtype,rewardfigtypep,rewardfigtypen,dpn,filepath )
 %FORAGINGCOND Summary of this function goes here
 %   Detailed explanation goes here
@@ -6,9 +6,14 @@ function [ fp,dots,dotrfidx,dotfigtype ] = ForagingCond( rfpos,or,isdprand,dprep
 import Analysis.Base.*
 
 pushscale = 0;
-fpor = 0.2;
+fpir = 0.01;
 figtypen = length(dotfigtypep);
 rewardfigtypen = 1;
+if isdprand
+    dprandr = 0.2;
+else
+    dprandr = 0.00001;
+end
 % [ dots,dotrfidx ] = RFPattern1_1( rfpos,isdprand,dprepn );
 % [ dots,dotrfidx ] = RFPattern1_2( rfpos,isdprand );
 dn = 10;
@@ -21,7 +26,7 @@ randrewardfigtypeidx = drv(rewardfigtypep,dpn,true);
             %     dotfigtype = Analysis.Base.drv(dotfigtypep,dn);
             dotfigtype = Analysis.Base.drv(dotfigtypep,dn,true);
             [ dots,dotrfidx ] = RFPattern1_3( rfpos,ori,origin,dotfigtype );
-            [ fp,dots ] = randtransDP( dots,fpor,30, pushscale );
+            [ fp,dots ] = randtransDP( dots,fpir,60, pushscale,dprandr );
             %     plotDP(dots);
             
             if israndrewardfigtype
@@ -58,16 +63,36 @@ co1 = cellfun(@(x,y)cat(2,x,y),cor1,o1,'uniformoutput',false);
 c = [co0;co1];
 % revert figure/background color
 condn = size(c,1);
-rev0 = arraypending({', REVCOL 0'},condn,1);
-rev1 = arraypending({', REVCOL 1'},condn,1);
-cr0 = cellfun(@(x,y)cat(2,x,y),c,rev0,'uniformoutput',false);
-cr1 = cellfun(@(x,y)cat(2,x,y),c,rev1,'uniformoutput',false);
-c = [cr0;cr1];
+if isalternaterevcol
+    rcs1 = {', REVCOL 0';', REVCOL 1'};
+    rccs1 = repmat(rcs1,condn/2,1);
+    rcs2 = {', REVCOL 1';', REVCOL 0'};
+    rccs2 = repmat(rcs2,condn/2,1);
+    dc = repmat(c,2,1);
+    c = cellfun(@(x,y)cat(2,x,y),dc,[rccs1;rccs2],'uniformoutput',false);
+    t = c(condn+1);
+    c(condn+1)=[];
+    c=[c;t];
+else
+    rev0 = arraypending({', REVCOL 0'},condn,1);
+    rev1 = arraypending({', REVCOL 1'},condn,1);
+    cr0 = cellfun(@(x,y)cat(2,x,y),c,rev0,'uniformoutput',false);
+    cr1 = cellfun(@(x,y)cat(2,x,y),c,rev1,'uniformoutput',false);
+    c = [cr0;cr1];
+end
+% set mask orientation
+condn = size(c,1);
+ro = randi([0,359],condn,1);
+randori = arrayfun(@(x)[', MASKOR ',num2str(x)],ro,'uniformoutput',false);
+c = cellfun(@(x,y)cat(2,x,y),c,randori,'uniformoutput',false);
 
 % write condition file
 rf = ['_rf=(',num2str(rfpos(1)),',',num2str(rfpos(2)),')'];
 if isdprand
-    rf = [rf,'dpr'];
+    rf = [rf,'_dpr'];
+end
+if isalternaterevcol
+    rf = [rf,'_rca'];
 end
 ori = ['_or=',num2str(or)];
 if nnz(origin)>0
