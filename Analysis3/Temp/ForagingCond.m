@@ -1,10 +1,11 @@
 function [ fp,dots,dotrfidx,dotfigtype ] = ForagingCond( rfpos,or,isdprand,isalternaterevcol,dprepn,...
-    dotfigtypep,origin,rewardfigtype,rewardfigtypep,rewardfigtypen,dpn,filepath )
+    dotfigtypep,maxfl,origin,rewardfigtype,rewardfigtypep,rewardfigtypen,dpn,filepath )
 %FORAGINGCOND Summary of this function goes here
 %   Detailed explanation goes here
 
 import Analysis.Base.*
 
+rfd = sqrt(sum(rfpos.^2));
 pushscale = 0;
 fpir = 0.01;
 figtypen = length(dotfigtypep);
@@ -55,9 +56,9 @@ randrewardfigtypeidx = drv(rewardfigtypep,dpn,true);
 
 % orientation( figure side flip )
 cor0 = getdp(dpn,or);
-cor1 = getdp(dpn,or+180);
+cor1 = getdp(dpn,mod(or+180,360));
 o0 = arraypending({[', FT0OR',' ',num2str(or),', ','FT1OR',' ',num2str(or)]},dpn,1);
-o1 = arraypending({[', FT0OR',' ',num2str(or+180),', ','FT1OR',' ',num2str(or+180)]},dpn,1);
+o1 = arraypending({[', FT0OR',' ',num2str(mod(or+180,360)),', ','FT1OR',' ',num2str(mod(or+180,360))]},dpn,1);
 co0 = cellfun(@(x,y)cat(2,x,y),cor0,o0,'uniformoutput',false);
 co1 = cellfun(@(x,y)cat(2,x,y),cor1,o1,'uniformoutput',false);
 c = [co0;co1];
@@ -82,9 +83,51 @@ else
 end
 % set mask orientation
 condn = size(c,1);
-ro = randi([0,359],condn,1);
-randori = arrayfun(@(x)[', MASKOR ',num2str(x)],ro,'uniformoutput',false);
-c = cellfun(@(x,y)cat(2,x,y),c,randori,'uniformoutput',false);
+mo1 = {[', MASKOR ',num2str(mod(or+90,360))];[', MASKOR ',num2str(mod(or+270,360))]};
+mos1 = repmat(mo1,condn/2,1);
+mo2 = {[', MASKOR ',num2str(mod(or+270,360))];[', MASKOR ',num2str(mod(or+90,360))]};
+mos2 = repmat(mo2,condn/2,1);
+dc = repmat(c,2,1);
+c = cellfun(@(x,y)cat(2,x,y),dc,[mos1;mos2],'uniformoutput',false);
+t = c(condn+1);
+c(condn+1)=[];
+c=[c;t];
+% random orientation
+% ro = randi([0,359],condn,1);
+% randori = arrayfun(@(x)[', MASKOR ',num2str(x)],ro,'uniformoutput',false);
+% c = cellfun(@(x,y)cat(2,x,y),c,randori,'uniformoutput',false);
+
+% get mask square grating temporal freqency and cycle width
+dt = 0.2;
+wrange=2.5*maxfl:6:5*rfd;
+frange = 0.5:0.01:(0.5/dt);
+tf = @(c)(c-2*maxfl)./(2*dt*c);
+cw = @(f)maxfl./(0.5-dt*f);
+
+f = tf(wrange);
+vfi = (f>frange(1)) & (f<frange(end));
+f=f(vfi);
+w=wrange(vfi);
+[m,midwi]=min(abs(w-(w(end)-w(1))/2-w(1)));
+w1 = w(midwi);
+f1 = f(midwi);
+
+w = cw(frange);
+vwi = (w>wrange(1)) & (w<wrange(end));
+w = w(vwi);
+f = frange(vwi);
+[m,midfi]=min(abs(f-(f(end)-f(1))/2-f(1)));
+f2 = f(midfi);
+w2 = w(midfi);
+
+condn = size(c,1);
+w3 = (w1-w2)/2+w2;
+wlow = w3-(w1-w2)/4;
+whigh = w3+(w1-w2)/4;
+ws = round(rand(condn,1)*(whigh-wlow)+wlow);
+fs = floor(tf(ws)*100)/100;
+wfs = arrayfun(@(x,y)[', GRCYCLEWID ',num2str(x),', GRDRIFTFREQ ',num2str(y)],ws,fs,'uniformoutput',false);
+c = cellfun(@(x,y)cat(2,x,y),c,wfs,'uniformoutput',false);
 
 % write condition file
 rf = ['_rf=(',num2str(rfpos(1)),',',num2str(rfpos(2)),')'];

@@ -5,7 +5,7 @@ function [  ] = UnfoldSubCond( block )
 import Analysis.Core.* Analysis.Base.* Analysis.IO.VLabIO.*
 
 switch block.param.TestType
-    case 'Foraging_10'
+    case {'Foraging_10','ForagingMask_10'}
         ForagingSubCond(block);
     case 'BO'
         BOSubCond(block);
